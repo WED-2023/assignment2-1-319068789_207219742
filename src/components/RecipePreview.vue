@@ -14,7 +14,7 @@
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
         <li>
-          <img v-if="recipe.vegen" :src="vegan_img" class="recipe-image" />
+          <img v-if="recipe.vegan" :src="vegan_img" class="recipe-image" />
         </li>
         <li>
           <img
@@ -46,9 +46,9 @@ export default {
     return {
       image_load: false,
       vegan_img:
-        "https://raw.githubusercontent.com/WED-2023/assignment2-1-319068789_207219742/main/src/assets/VeganF.ico",
+        "https://foodwrite.co.uk/wp-content/uploads/2019/01/57067475_s-vegan-www.123rf.com_-678x381.jpg",
       gluten_free_img:
-        "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/gluten-free-icon.png?raw=true",
+        "https://cdn-icons-png.flaticon.com/256/4876/4876700.png",
       vegeterian_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegetarian-icon.png?raw=true",
     };
@@ -164,8 +164,8 @@ export default {
 
 /* New CSS rule for smaller icons */
 .recipe-preview .recipe-footer ul.recipe-overview li img.recipe-image {
-  width: 20px; /* Adjust the size as needed */
-  height: 20px; /* Adjust the size as needed */
+  width: 40px; /* Adjust the size as needed */
+  height: 40px; /* Adjust the size as needed */
   margin: 0 auto; /* Center the image */
   display: block; /* Ensure the image is a block element */
 }
