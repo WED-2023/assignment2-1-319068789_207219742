@@ -14,7 +14,7 @@
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
         <li>
-          <img v-if="true" :src="recipe.image" class="recipe-image" />
+          <img v-if="true" :src="vegan_img" class="recipe-image" />
         </li>
       </ul>
     </div>
@@ -31,6 +31,8 @@ export default {
   data() {
     return {
       image_load: false,
+      vegan_img:
+        "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/VeganF.png?raw=true",
     };
   },
   props: {
