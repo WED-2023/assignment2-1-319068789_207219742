@@ -14,7 +14,21 @@
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
         <li>
-          <img v-if="true" :src="vegan_img" class="recipe-image" />
+          <img v-if="recipe.vegen" :src="vegan_img" class="recipe-image" />
+        </li>
+        <li>
+          <img
+            v-if="recipe.vegetarian"
+            :src="vegeterian_img"
+            class="recipe-image"
+          />
+        </li>
+        <li>
+          <img
+            v-if="recipe.glutenFree"
+            :src="gluten_free_img"
+            class="recipe-image"
+          />
         </li>
       </ul>
     </div>
@@ -32,7 +46,11 @@ export default {
     return {
       image_load: false,
       vegan_img:
-        "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/VeganF.png?raw=true",
+        "https://raw.githubusercontent.com/WED-2023/assignment2-1-319068789_207219742/main/src/assets/VeganF.ico",
+      gluten_free_img:
+        "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/gluten-free-icon.png?raw=true",
+      vegeterian_img:
+        "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegetarian-icon.png?raw=true",
     };
   },
   props: {
@@ -142,5 +160,13 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
+}
+
+/* New CSS rule for smaller icons */
+.recipe-preview .recipe-footer ul.recipe-overview li img.recipe-image {
+  width: 20px; /* Adjust the size as needed */
+  height: 20px; /* Adjust the size as needed */
+  margin: 0 auto; /* Center the image */
+  display: block; /* Ensure the image is a block element */
 }
 </style>
