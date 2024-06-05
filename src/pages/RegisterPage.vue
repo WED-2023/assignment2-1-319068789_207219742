@@ -21,7 +21,7 @@
           Username length should be between 3-8 characters long
         </b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.form.username.alpha">
-          Username alpha
+          Username should contain only alphabetic characters
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -43,7 +43,7 @@
       </b-form-group>
 
       <b-form-group
-        id="input-group-Password"
+        id="input-group-password"
         label-cols-sm="3"
         label="Password:"
         label-for="password"
@@ -59,12 +59,18 @@
         </b-form-invalid-feedback>
         <b-form-text v-else-if="$v.form.password.$error" text-variant="info">
           Your password should be <strong>strong</strong>. <br />
-          For that, your password should be also:
+          For that, your password should also:
         </b-form-text>
         <b-form-invalid-feedback
           v-if="$v.form.password.required && !$v.form.password.length"
         >
           Have length between 5-10 characters long
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.password.hasDigit">
+          Contain at least one digit (0-9)
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.password.hasSpecialChar">
+          Contain at least one special character (not a digit or a letter)
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -94,7 +100,7 @@
       <b-button
         type="submit"
         variant="primary"
-        style="width:250px;"
+        style="width: 250px;"
         class="ml-5 w-75"
         >Register</b-button
       >
@@ -127,9 +133,12 @@ import {
   maxLength,
   alpha,
   sameAs,
-  email
 } from "vuelidate/lib/validators";
 import { mockRegister } from "../services/auth.js";
+
+const hasDigit = (value) => /\d/.test(value);
+const hasSpecialChar = (value) => /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
 export default {
   name: "Register",
   data() {
@@ -142,11 +151,11 @@ export default {
         password: "",
         confirmedPassword: "",
         email: "",
-        submitError: undefined
+        submitError: undefined,
       },
       countries: [{ value: null, text: "", disabled: true }],
       errors: [],
-      validated: false
+      validated: false,
     };
   },
   validations: {
@@ -154,25 +163,25 @@ export default {
       username: {
         required,
         length: (u) => minLength(3)(u) && maxLength(8)(u),
-        alpha
+        alpha,
       },
       country: {
-        required
+        required,
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        hasDigit,
+        hasSpecialChar,
       },
       confirmedPassword: {
         required,
-        sameAsPassword: sameAs("password")
-      }
-    }
+        sameAsPassword: sameAs("password"),
+      },
+    },
   },
   mounted() {
-    // console.log("mounted");
     this.countries.push(...countries);
-    // console.log($v);
   },
   methods: {
     validateState(param) {
@@ -181,39 +190,24 @@ export default {
     },
     async Register() {
       try {
-
-        // const response = await this.axios.post(
-        //   // "https://test-for-3-2.herokuapp.com/user/Register",
-        //   this.$root.store.server_domain + "/Register",
-
-        //   {
-        //     username: this.form.username,
-        //     password: this.form.password
-        //   }
-        // );
-
         const userDetails = {
           username: this.form.username,
-          password: this.form.password
+          password: this.form.password,
         };
 
         const response = mockRegister(userDetails);
 
         this.$router.push("/login");
-        // console.log(response);
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
-
     onRegister() {
-      // console.log("register method called");
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
       this.Register();
     },
     onReset() {
@@ -224,15 +218,16 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: ""
+        email: "",
       };
       this.$nextTick(() => {
         this.$v.$reset();
       });
-    }
-  }
+    },
+  },
 };
 </script>
+
 <style lang="scss" scoped>
 .container {
   max-width: 500px;

@@ -4,10 +4,8 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </b-col>
+    <b-row v-for="r in recipes" :key="r.id">
+      <RecipePreview class="recipePreview" :recipe="r" />
     </b-row>
   </b-container>
 </template>
@@ -18,17 +16,17 @@ import { mockGetRecipesPreview } from "../services/recipes.js";
 export default {
   name: "RecipePreviewList",
   components: {
-    RecipePreview
+    RecipePreview,
   },
   props: {
     title: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      recipes: []
+      recipes: [],
     };
   },
   mounted() {
@@ -41,9 +39,8 @@ export default {
         //   this.$root.store.server_domain + "/recipes/random",
         // );
 
-        const amountToFetch = 5; // Set this to how many recipes you want to fetch
+        const amountToFetch = 3; // Set this to how many recipes you want to fetch
         const response = mockGetRecipesPreview(amountToFetch);
-
 
         console.log(response);
         const recipes = response.data.recipes;
@@ -53,8 +50,8 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
