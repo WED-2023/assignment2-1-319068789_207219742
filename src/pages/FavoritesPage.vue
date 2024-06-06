@@ -1,0 +1,52 @@
+<template>
+  <div class="container">
+    <h1 class="title">Favorites Page</h1>
+    <b-row v-for="r in recipes" :key="r.id">
+      <RecipePreview class="recipePreview" :recipe="r" />
+    </b-row>
+  </div>
+</template>
+
+<script>
+import RecipePreview from "../components/RecipePreview";
+import { mockGetFavorites } from "../services/recipes.js";
+export default {
+  name: "RecipePreviewList",
+  components: {
+    RecipePreview,
+  },
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      recipes: [],
+    };
+  },
+  mounted() {
+    this.updateRecipes();
+  },
+  methods: {
+    async updateRecipes() {
+      try {
+        // const response = await this.axios.get(
+        //   this.$root.store.server_domain + "/recipes/random",
+        // );
+
+        const response = mockGetRecipesPreview(amountToFetch);
+
+        console.log(response);
+        const recipes = response.data.recipes;
+        console.log(recipes);
+        this.recipes = [];
+        this.recipes.push(...recipes);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>

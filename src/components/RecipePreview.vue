@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mockAddToFavorites } from "../services/recipes.js";
+import { mockRemoveFromFavorites } from "../services/recipes.js";
 export default {
   mounted() {
     this.axios.get(this.recipe.image).then(() => {
@@ -62,6 +64,11 @@ export default {
   methods: {
     toggleFavorite() {
       this.isFavorited = !this.isFavorited;
+      if (this.isFavorited) {
+        mockAddToFavorites(recipe.id);
+      } else {
+        mockRemoveFromFavorites(recipe.id);
+      }
     },
   },
 };
