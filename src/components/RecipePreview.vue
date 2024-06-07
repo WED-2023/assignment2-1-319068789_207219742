@@ -1,37 +1,39 @@
 <template>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
-    </div>
-    <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
+  <div class="recipe-preview-container">
+    <router-link
+      :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+      class="recipe-preview"
+    >
+      <div class="recipe-body">
+        <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
       </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-        <li>
-          <img v-if="recipe.vegan" :src="vegan_img" class="icon" />
-        </li>
-        <li>
-          <img v-if="recipe.vegetarian" :src="vegeterian_img" class="icon" />
-        </li>
-        <li>
-          <img v-if="recipe.glutenFree" :src="gluten_free_img" class="icon" />
-        </li>
-      </ul>
-      <button
-        @click.stop="toggleFavorite"
-        :class="{ favorited: isFavorited }"
-        class="favorite-button"
-      >
-        {{ isFavorited ? "Favorited" : "Add to Favorites" }}
-      </button>
-    </div>
-  </router-link>
+      <div class="recipe-footer">
+        <div :title="recipe.title" class="recipe-title">
+          {{ recipe.title }}
+        </div>
+        <ul class="recipe-overview">
+          <li>{{ recipe.readyInMinutes }} minutes</li>
+          <li>{{ recipe.aggregateLikes }} likes</li>
+          <li>
+            <img v-if="recipe.vegan" :src="vegan_img" class="icon" />
+          </li>
+          <li>
+            <img v-if="recipe.vegetarian" :src="vegeterian_img" class="icon" />
+          </li>
+          <li>
+            <img v-if="recipe.glutenFree" :src="gluten_free_img" class="icon" />
+          </li>
+        </ul>
+      </div>
+    </router-link>
+    <button
+      @click.stop.prevent="toggleFavorite"
+      :class="{ favorited: isFavorited }"
+      class="favorite-button"
+    >
+      <i :class="[isFavorited ? 'bi bi-heart-fill' : 'bi bi-heart']"></i>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -44,7 +46,7 @@ import {
 export default {
   data() {
     return {
-      image_load: true, // Ensure image_load is initially set to true
+      image_load: true,
       vegan_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegen%20friendly.png?raw=true",
       gluten_free_img:
@@ -67,9 +69,9 @@ export default {
   methods: {
     async checkIfFavorite() {
       try {
-        const response = await mockCheckIfFavorite(this.recipe.id); // Ensure it awaits the response
-        console.log("Favorite check response:", response.data); // Debugging line
-        this.isFavorited = response.data.isFavorite; // Correctly assign the boolean value
+        const response = await mockCheckIfFavorite(this.recipe.id);
+        console.log("Favorite check response:", response.data);
+        this.isFavorited = response.data.isFavorite;
       } catch (error) {
         console.log(error);
       }
@@ -95,16 +97,22 @@ export default {
 </script>
 
 <style scoped>
-.recipe-preview {
+.recipe-preview-container {
+  position: relative;
   display: inline-block;
   width: 90%;
   height: 100%;
-  position: relative;
   margin: 10px 10px;
   transition: transform 0.3s ease; /* Smooth transition for transform */
 }
-.recipe-preview:hover {
-  transform: scale(1.05); /* Scale the element up slightly on hover */
+.recipe-preview-container:hover {
+  transform: scale(1.05); /* Scale the container up slightly on hover */
+}
+.recipe-preview {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 .recipe-preview > .recipe-body {
   width: 100%;
@@ -183,19 +191,24 @@ export default {
 }
 
 .favorite-button {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  font-size: 14px;
-  color: #fff;
-  background-color: #007bff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0px;
+  padding: 5px;
+  font-size: 24px; /* Adjusted for icon size */
+  color: #007bff;
+  background-color: transparent;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .favorite-button.favorited {
-  background-color: #28a745; /* Change color when favorited */
+  color: #28a745; /* Change color when favorited */
+}
+
+.recipe-preview-container:hover .favorite-button {
+  transform: scale(1.05); /* Scale the favorite button up slightly on hover */
 }
 </style>
