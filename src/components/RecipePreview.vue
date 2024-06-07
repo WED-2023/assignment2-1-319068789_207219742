@@ -8,7 +8,7 @@
         <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
       </div>
       <div class="recipe-footer">
-        <div :title="recipe.title" class="recipe-title">
+        <div class="recipe-title">
           {{ recipe.title }}
         </div>
         <ul class="recipe-overview">
@@ -148,9 +148,6 @@ export default {
   font-size: 14pt;
   font-weight: bold; /* Bold title */
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview {
@@ -159,10 +156,10 @@ export default {
   display: flex;
   justify-content: space-around; /* Evenly space items */
   margin-bottom: 0;
+  list-style-type: none; /* Remove default list styling */
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview li {
-  flex: 1;
   text-align: center;
 }
 
