@@ -102,11 +102,16 @@ export default {
   display: inline-block;
   width: 90%;
   height: 100%;
-  margin: 10px 10px;
-  transition: transform 0.3s ease; /* Smooth transition for transform */
+  margin: 10px;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  overflow: hidden; /* Ensure children are clipped within the rounded corners */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+  background-color: #fff; /* White background */
 }
 .recipe-preview-container:hover {
   transform: scale(1.05); /* Scale the container up slightly on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
 }
 .recipe-preview {
   display: inline-block;
@@ -128,9 +133,7 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
+  object-fit: cover; /* Ensures image covers the area */
 }
 
 .recipe-preview .recipe-footer {
@@ -142,49 +145,30 @@ export default {
 .recipe-preview .recipe-footer .recipe-title {
   padding: 10px 10px;
   width: 100%;
-  font-size: 12pt;
+  font-size: 14pt;
+  font-weight: bold; /* Bold title */
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
-  -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview {
-  padding: 5px 10px;
+  padding: 10px;
   width: 100%;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex: 1 auto;
-  -ms-flex: 1 auto;
-  flex: 1 auto;
-  table-layout: fixed;
-  margin-bottom: 0px;
+  justify-content: space-around; /* Evenly space items */
+  margin-bottom: 0;
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview li {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  -ms-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
-  width: 90px;
-  display: table-cell;
+  flex: 1;
   text-align: center;
 }
 
 /* New CSS rule for smaller icons */
 .recipe-preview .recipe-footer ul.recipe-overview li img.icon {
-  width: 50px; /* Adjust the size as needed */
+  width: 40px; /* Adjust the size as needed */
   height: 40px; /* Adjust the size as needed */
   margin: 0 auto; /* Center the image */
   display: block; /* Ensure the image is a block element */
@@ -192,10 +176,9 @@ export default {
 
 .favorite-button {
   position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0px;
-  padding: 5px;
+  top: 0px; /* Adjusted to move it slightly down */
+  right: 0px; /* Adjusted to move it slightly left */
+  padding: 8px;
   font-size: 24px; /* Adjusted for icon size */
   color: #007bff;
   background-color: transparent;
@@ -209,6 +192,6 @@ export default {
 }
 
 .recipe-preview-container:hover .favorite-button {
-  transform: scale(1.05); /* Scale the favorite button up slightly on hover */
+  transform: scale(1.1); /* Scale the favorite button up slightly on hover */
 }
 </style>
