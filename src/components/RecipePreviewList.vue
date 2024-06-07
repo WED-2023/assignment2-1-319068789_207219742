@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h3>
+    <h3 class="list-title">
       {{ title }}:
       <slot></slot>
     </h3>
@@ -58,5 +58,13 @@ export default {
 <style lang="scss" scoped>
 .container {
   min-height: 400px;
+}
+
+.list-title {
+  font-size: 1.7rem; /* Adjust the font size as needed */
+  font-weight: bold; /* Make the font bold */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Specify a special font family */
+  color: #333; /* Adjust the color as needed */
+  margin-bottom: 1rem; /* Add some spacing between the title and the content */
 }
 </style>

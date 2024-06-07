@@ -3,10 +3,7 @@
     <h1 class="title">Main Page</h1>
     <div class="main-content">
       <div class="left-section">
-        <RecipePreviewList
-          title="Randome Recipes"
-          class="RandomRecipes center"
-        />
+        <RecipePreviewList title="Random Recipes" class="center" />
       </div>
       <div class="right-section">
         <router-link v-if="!$root.store.username" to="/login" tag="button"
@@ -21,7 +18,7 @@
             center: true,
           }"
           disabled
-        ></RecipePreviewList>
+        />
       </div>
     </div>
   </div>
@@ -36,4 +33,57 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 42px;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section {
+  flex-basis: 48%;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.recipe-preview-list {
+  margin-bottom: 30px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #ff7f00;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e65c00;
+}
+</style>
