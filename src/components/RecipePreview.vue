@@ -35,17 +35,16 @@
 </template>
 
 <script>
-import { mockAddToFavorites } from "../services/recipes.js";
-import { mockRemoveFromFavorites } from "../services/recipes.js";
+import {
+  mockAddToFavorites,
+  mockRemoveFromFavorites,
+  mockCheckIfFavorite,
+} from "../services/recipes.js";
+
 export default {
-  mounted() {
-    this.axios.get(this.recipe.image).then(() => {
-      this.image_load = true;
-    });
-  },
   data() {
     return {
-      image_load: true,
+      image_load: true, // Ensure image_load is initially set to true
       vegan_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegen%20friendly.png?raw=true",
       gluten_free_img:
@@ -61,13 +60,34 @@ export default {
       required: true,
     },
   },
+  async mounted() {
+    this.checkIfFavorite();
+    await this.loadImage();
+  },
   methods: {
+    async checkIfFavorite() {
+      try {
+        const response = await mockCheckIfFavorite(this.recipe.id); // Ensure it awaits the response
+        console.log("Favorite check response:", response.data); // Debugging line
+        this.isFavorited = response.data.isFavorite; // Correctly assign the boolean value
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async loadImage() {
+      try {
+        await this.axios.get(this.recipe.image);
+        this.image_load = true;
+      } catch (error) {
+        console.log("Image load error:", error);
+      }
+    },
     toggleFavorite() {
       this.isFavorited = !this.isFavorited;
       if (this.isFavorited) {
-        mockAddToFavorites(recipe.id);
+        mockAddToFavorites(this.recipe.id);
       } else {
-        mockRemoveFromFavorites(recipe.id);
+        mockRemoveFromFavorites(this.recipe.id);
       }
     },
   },

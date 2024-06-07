@@ -15,12 +15,7 @@ export default {
   components: {
     RecipePreview,
   },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-  },
+
   data() {
     return {
       recipes: [],
@@ -36,7 +31,7 @@ export default {
         //   this.$root.store.server_domain + "/recipes/random",
         // );
 
-        const response = mockGetRecipesPreview(amountToFetch);
+        const response = mockGetFavorites();
 
         console.log(response);
         const recipes = response.data.recipes;
