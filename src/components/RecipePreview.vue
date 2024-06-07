@@ -12,8 +12,15 @@
           {{ recipe.title }}
         </div>
         <ul class="recipe-overview">
-          <li>{{ recipe.readyInMinutes }} minutes</li>
-          <li>{{ recipe.aggregateLikes }} likes</li>
+          <li>
+            <span>
+              <i class="fas fa-clock"></i> {{ recipe.readyInMinutes }} minutes
+            </span>
+          </li>
+          <li>
+            {{ recipe.aggregateLikes }}
+            <i class="fas fa-heart" style="color: orange;"></i>
+          </li>
           <li>
             <img v-if="recipe.vegan" :src="vegan_img" class="icon" />
           </li>
