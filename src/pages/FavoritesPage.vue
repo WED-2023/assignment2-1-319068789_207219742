@@ -1,9 +1,11 @@
 <template>
   <div class="container">
     <h1 class="title">Favorites Page</h1>
-    <b-row v-for="r in recipes" :key="r.id">
-      <RecipePreview class="recipePreview" :recipe="r" />
-    </b-row>
+    <div class="left-section">
+      <b-row v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </b-row>
+    </div>
   </div>
 </template>
 
