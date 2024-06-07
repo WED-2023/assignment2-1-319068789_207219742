@@ -148,6 +148,7 @@ export default {
   font-size: 14pt;
   font-weight: bold; /* Bold title */
   text-align: left;
+  color: #000; /* Change font color to black */
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview {
@@ -161,6 +162,7 @@ export default {
 
 .recipe-preview .recipe-footer ul.recipe-overview li {
   text-align: center;
+  color: #000; /* Change font color to black */
 }
 
 /* New CSS rule for smaller icons */
