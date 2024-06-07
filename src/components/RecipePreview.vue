@@ -193,8 +193,12 @@ export default {
   border-radius: 50%; /* Make it a circle */
   border: none;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background color */
   line-height: 28px; /* Ensure the heart icon is vertically centered */
+}
+
+.favorite-button:hover {
+  background-color: #e65c00; /* Change background color on hover */
 }
 
 .favorite-button.favorited {
