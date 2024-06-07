@@ -175,22 +175,26 @@ export default {
 
 .favorite-button {
   position: absolute;
-  top: 0px; /* Adjusted to move it slightly down */
-  right: 0px; /* Adjusted to move it slightly left */
+  top: 8px; /* Adjusted to move it slightly down */
+  right: 8px; /* Adjusted to move it slightly left */
   padding: 8px;
   font-size: 24px; /* Adjusted for icon size */
-  color: #007bff;
-  background-color: transparent;
+  color: #ffffff; /* Default color */
+  background-color: #ff7f00; /* Orange circle background color */
+  width: 40px; /* Set width equal to height to ensure a perfect circle */
+  height: 40px; /* Set height equal to width */
+  border-radius: 50%; /* Make it a circle */
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease;
+  line-height: 28px; /* Ensure the heart icon is vertically centered */
 }
 
 .favorite-button.favorited {
-  color: #28a745; /* Change color when favorited */
+  color: #ffffff; /* Change button color to white when favorited */
 }
 
-.recipe-preview-container:hover .favorite-button {
-  transform: scale(1.1); /* Scale the favorite button up slightly on hover */
+.favorite-button.favorited .bi-heart-fill {
+  color: #ffffff; /* Change heart icon color to orange when favorited */
 }
 </style>
