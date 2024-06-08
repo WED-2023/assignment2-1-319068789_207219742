@@ -3,12 +3,25 @@
     <div v-if="recipe">
       <div class="recipe-header">
         <h1>{{ recipe.title }}</h1>
+        <button
+          @click.stop.prevent="toggleFavorite"
+          :class="{ favorited: isFavorited }"
+          class="favorite-button"
+        >
+          <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
+        </button>
         <img :src="recipe.image" class="center" />
         <ul class="recipe-overview">
           <li>
             <span>
               <i class="fas fa-clock"></i>
               {{ recipe.readyInMinutes }} minutes
+            </span>
+          </li>
+          <li>
+            <span>
+              <i class="fas fa-user"></i>
+              {{ recipe.servings }} servings
             </span>
           </li>
           <li>
@@ -40,28 +53,31 @@
             </ul>
             Instructions:
             <ol>
-              <li v-for="s in recipe._instructions" :key="s.number">
-                {{ s.step }}
+              <li v-for="ins in instrucions" :key="ins">
+                {{ ins }}
               </li>
             </ol>
           </div>
           <div class="wrapped"></div>
         </div>
       </div>
-      <!-- <pre>
-      {{ $route.params }}
-      {{ recipe }}
-    </pre
-      > -->
     </div>
   </div>
 </template>
 
 <script>
-import { mockGetRecipeFullDetails } from "../services/recipes.js";
+import {
+  mockGetRecipeFullDetails,
+  mockGetInstuctions,
+  mockAddToFavorites,
+  mockRemoveFromFavorites,
+  mockCheckIfFavorite,
+} from "../services/recipes.js";
+
 export default {
   data() {
     return {
+      instrucions: [],
       recipe: null,
       vegan_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegen%20friendly.png?raw=true",
@@ -69,70 +85,89 @@ export default {
         "https://cdn-icons-png.flaticon.com/256/4876/4876700.png",
       vegeterian_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegetarian-icon.png?raw=true",
+      isFavorited: false,
     };
   },
-  async created() {
-    try {
-      let response;
-      // response = this.$route.params.response;
 
+  mounted() {
+    this.created();
+    this.updateRecipes();
+    this.checkIfFavorite();
+  },
+
+  methods: {
+    async created() {
       try {
-        // response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/" + this.$route.params.recipeId,
-        //   {
-        //     withCredentials: true
-        //   }
-        // );
+        let response;
 
         response = null;
         response = mockGetRecipeFullDetails(this.$route.params.recipeId);
 
-        // console.log("response.status", response.status);
         if (response === null) this.$router.replace("/NotFound");
+
+        let {
+          analyzedInstructions,
+          instructions,
+          extendedIngredients,
+          aggregateLikes,
+          readyInMinutes,
+          image,
+          title,
+          vegetarian,
+          vegan,
+          glutenFree,
+          servings,
+        } = response.data.recipe;
+
+        let _recipe = {
+          instructions,
+          analyzedInstructions,
+          extendedIngredients,
+          aggregateLikes,
+          readyInMinutes,
+          image,
+          title,
+          vegetarian,
+          vegan,
+          glutenFree,
+          servings,
+        };
+
+        this.recipe = _recipe;
       } catch (error) {
-        console.log("error.response.status", error.response.status);
-        this.$router.replace("/NotFound");
-        return;
+        console.log(error);
       }
+    },
+    async updateRecipes() {
+      try {
+        const response = mockGetInstuctions(this.$route.params.recipeId);
 
-      let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        vegetarian,
-        vegan,
-        glutenFree,
-      } = response.data.recipe;
-
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
-
-      let _recipe = {
-        instructions,
-        _instructions,
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title,
-        vegetarian,
-        vegan,
-        glutenFree,
-      };
-
-      this.recipe = _recipe;
-    } catch (error) {
-      console.log(error);
-    }
+        console.log(response);
+        const analyzedInstructions = response.data.instrucions;
+        console.log(analyzedInstructions);
+        this.instrucions = [];
+        this.instrucions.push(...analyzedInstructions);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async checkIfFavorite() {
+      try {
+        const response = await mockCheckIfFavorite(this.$route.params.recipeId);
+        console.log("Favorite check response:", response.data);
+        this.isFavorited = response.data.isFavorite;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    toggleFavorite() {
+      this.isFavorited = !this.isFavorited;
+      if (this.isFavorited) {
+        mockAddToFavorites(this.$route.params.recipeId);
+      } else {
+        mockRemoveFromFavorites(this.$route.params.recipeId);
+      }
+    },
   },
 };
 </script>
@@ -178,5 +213,34 @@ ul.recipe-overview li img.icon {
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.favorite-button {
+  position: absolute;
+  top: 80px; /* Adjusted to move it slightly down */
+  right: 30px; /* Adjusted to move it slightly left */
+  padding: 8px;
+  font-size: 24px; /* Adjusted for icon size */
+  color: #ffffff; /* Default color */
+  background-color: #ff7f00; /* Orange circle background color */
+  width: 40px; /* Set width equal to height to ensure a perfect circle */
+  height: 40px; /* Set height equal to width */
+  border-radius: 50%; /* Make it a circle */
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background color */
+  line-height: 24px; /* Ensure the star icon is vertically centered */
+}
+
+.favorite-button:hover {
+  background-color: #e65c00; /* Change background color on hover */
+}
+
+.favorite-button.favorited {
+  color: #ffffff; /* Change button color to white when favorited */
+}
+
+.favorite-button.favorited .fa-star {
+  color: #ffffff; /* Change star icon color to white when favorited */
 }
 </style>

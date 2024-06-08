@@ -38,7 +38,7 @@
       :class="{ favorited: isFavorited }"
       class="favorite-button"
     >
-      <i :class="[isFavorited ? 'bi bi-heart-fill' : 'bi bi-heart']"></i>
+      <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
     </button>
   </div>
 </template>
@@ -194,7 +194,7 @@ export default {
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background color */
-  line-height: 28px; /* Ensure the heart icon is vertically centered */
+  line-height: 24px; /* Ensure the star icon is vertically centered */
 }
 
 .favorite-button:hover {
@@ -205,7 +205,7 @@ export default {
   color: #ffffff; /* Change button color to white when favorited */
 }
 
-.favorite-button.favorited .bi-heart-fill {
-  color: #ffffff; /* Change heart icon color to orange when favorited */
+.favorite-button.favorited .fa-star {
+  color: #ffffff; /* Change star icon color to white when favorited */
 }
 </style>

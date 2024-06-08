@@ -16,6 +16,12 @@ export function mockGetRecipeFullDetails(recipeId) {
   return { data: { recipe: recipe_full_view1[recipeId] } };
 }
 
+export function mockGetInstuctions(recipeId) {
+  return {
+    data: { instrucions: recipe_full_view1[recipeId].analyzedInstructions },
+  };
+}
+
 export function mockAddToFavorites(recipeId) {
   favoriteDictionary[recipeId] = recipe_preview1[recipeId];
 }
