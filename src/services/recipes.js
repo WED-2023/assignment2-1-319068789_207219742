@@ -42,3 +42,8 @@ export function mockGetFavorites() {
 export function mockCheckIfFavorite(recipeId) {
   return { data: { isFavorite: recipeId in favoriteDictionary } };
 }
+
+// Mock functions to simulate API calls
+export function mockSearchRecipes(query) {
+  return mockGetRecipesPreview();
+}
