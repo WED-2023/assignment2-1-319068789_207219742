@@ -4,12 +4,26 @@ import recipe_preview1 from "../assets/mocks/recipe_preview1.json";
 let favoriteDictionary = {};
 
 export function mockGetRecipesPreview(amount = 1) {
-  let recipes = [];
-  recipes.push(recipe_preview1[11111]);
-  recipes.push(recipe_preview1[22222]);
-  recipes.push(recipe_preview1[33333]);
+  const recipeIds = Object.keys(recipe_preview1);
+  const totalRecipes = recipeIds.length;
 
-  return { data: { recipes: recipes } };
+  // Shuffle the array of recipe IDs
+  for (let i = recipeIds.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [recipeIds[i], recipeIds[j]] = [recipeIds[j], recipeIds[i]];
+  }
+
+  // If the requested amount is greater than the total number of recipes, repeat recipes
+  const selectedRecipes = [];
+  while (selectedRecipes.length < amount) {
+    const remaining = amount - selectedRecipes.length;
+    const toAdd = Math.min(remaining, totalRecipes);
+    selectedRecipes.push(
+      ...recipeIds.slice(0, toAdd).map((id) => recipe_preview1[id])
+    );
+  }
+
+  return { data: { recipes: selectedRecipes } };
 }
 
 export function mockGetRecipeFullDetails(recipeId) {
@@ -44,6 +58,10 @@ export function mockCheckIfFavorite(recipeId) {
 }
 
 // Mock functions to simulate API calls
-export function mockSearchRecipes(query) {
-  return mockGetRecipesPreview();
+export function mockSearchRecipes(query, amount) {
+  return mockGetRecipesPreview(amount);
+}
+
+export function mockGetLastRecipes(amount) {
+  return mockGetRecipesPreview(amount);
 }

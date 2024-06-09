@@ -12,7 +12,11 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { mockGetRecipesPreview } from "../services/recipes.js";
+import {
+  mockGetRecipesPreview,
+  mockGetLastRecipes,
+} from "../services/recipes.js";
+
 export default {
   name: "RecipePreviewList",
   components: {
@@ -22,6 +26,11 @@ export default {
     title: {
       type: String,
       required: true,
+    },
+    listType: {
+      type: String,
+      required: true,
+      validator: (value) => ["randomRecipes", "lastRecipes"].includes(value),
     },
   },
   data() {
@@ -35,13 +44,13 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        // const response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/random",
-        // );
-
         const amountToFetch = 3; // Set this to how many recipes you want to fetch
-        const response = mockGetRecipesPreview(amountToFetch);
-
+        let response;
+        if (this.listType === "randomRecipes") {
+          response = mockGetRecipesPreview(amountToFetch);
+        } else if (this.listType === "lastRecipes") {
+          response = mockGetLastRecipes(amountToFetch);
+        }
         console.log(response);
         const recipes = response.data.recipes;
         console.log(recipes);

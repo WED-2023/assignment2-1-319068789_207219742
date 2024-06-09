@@ -3,7 +3,11 @@
     <h1 class="title">Main Page</h1>
     <div class="main-content">
       <div class="left-section">
-        <RecipePreviewList title="Random Recipes" class="center" />
+        <RecipePreviewList
+          title="Random Recipes"
+          listType="randomRecipes"
+          class="center"
+        />
       </div>
       <div class="right-section">
         <router-link v-if="!$root.store.username" to="/login" tag="button"
@@ -12,6 +16,7 @@
 
         <RecipePreviewList
           title="Last Viewed Recipes"
+          listType="lastRecipes"
           :class="{
             RandomRecipes: true,
             blur: !$root.store.username,
