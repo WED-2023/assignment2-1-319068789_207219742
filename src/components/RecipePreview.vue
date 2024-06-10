@@ -19,7 +19,7 @@
           </li>
           <li>
             {{ recipe.aggregateLikes }}
-            <i class="fas fa-heart" style="color: orange;"></i>
+            <i class="fas fa-heart" style="color: red;"></i>
           </li>
           <li>
             <img v-if="recipe.vegan" :src="vegan_img" class="icon" />

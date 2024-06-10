@@ -1,51 +1,3 @@
-/* Dropdown container */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown button */
-.dropbtn {
-  background-color: transparent;
-  color: #2c3e50;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: #2c3e50;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #f9f9f9;
-}
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -54,12 +6,12 @@
 .main-content {
   display: flex;
   justify-content: space-between;
-  gap: 200px; /* Increase the gap between the left and right sections */
+  gap: 200px;
 }
 
 .left-section,
 .right-section {
-  width: 45%; /* Adjusted width to accommodate the increased gap */
+  width: 45%;
 }
 
 .RandomRecipes {
@@ -67,7 +19,7 @@
 }
 
 .blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+  -webkit-filter: blur(5px);
   filter: blur(2px);
 }
 

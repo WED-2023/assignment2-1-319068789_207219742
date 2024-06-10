@@ -30,7 +30,7 @@ export function mockGetRecipeFullDetails(recipeId) {
   return { data: { recipe: recipe_full_view1[recipeId] } };
 }
 
-export function mockGetInstuctions(recipeId) {
+export function mockGetInstructions(recipeId) {
   return {
     data: { instrucions: recipe_full_view1[recipeId].analyzedInstructions },
   };
@@ -58,10 +58,37 @@ export function mockCheckIfFavorite(recipeId) {
 }
 
 // Mock functions to simulate API calls
-export function mockSearchRecipes(query, amount) {
+export function mockSearchRecipes(
+  query,
+  amount,
+  selectedCuisines,
+  selectedDiets,
+  selectedIntolerances
+) {
   return mockGetRecipesPreview(amount);
 }
 
 export function mockGetLastRecipes(amount) {
   return mockGetRecipesPreview(amount);
 }
+
+export function mockGetMyRecipes() {
+  return mockGetRecipesPreview(3);
+}
+
+export function mockGetFamilyRecipes() {
+  return mockGetRecipesPreview(3);
+}
+
+export function mockLikeRecipe(recipeId) {}
+
+export function mockCheckIfLiked(recipeId) {}
+
+export function mockUploadRecipe(
+  title,
+  image,
+  time,
+  servings,
+  ingredients,
+  instructions
+) {}

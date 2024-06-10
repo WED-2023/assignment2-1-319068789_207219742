@@ -3,13 +3,22 @@
     <div v-if="recipe">
       <div class="recipe-header">
         <h1>{{ recipe.title }}</h1>
-        <button
-          @click.stop.prevent="toggleFavorite"
-          :class="{ favorited: isFavorited }"
-          class="favorite-button"
-        >
-          <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
-        </button>
+        <div class="button-group">
+          <button
+            @click.stop.prevent="toggleLike"
+            :class="{ liked: isLiked }"
+            class="like-button"
+          >
+            <i :class="[isLiked ? 'fas fa-heart' : 'far fa-heart']"></i>
+          </button>
+          <button
+            @click.stop.prevent="toggleFavorite"
+            :class="{ favorited: isFavorited }"
+            class="favorite-button"
+          >
+            <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
+          </button>
+        </div>
         <img :src="recipe.image" class="center" />
         <ul class="recipe-overview">
           <li>
@@ -26,13 +35,13 @@
           </li>
           <li>
             {{ recipe.aggregateLikes }}
-            <i class="fas fa-heart" style="color: orange;"></i>
+            <i class="fas fa-heart" style="color: red;"></i>
           </li>
           <li>
             <img v-if="recipe.vegan" :src="vegan_img" class="icon" />
           </li>
           <li>
-            <img v-if="recipe.vegetarian" :src="vegeterian_img" class="icon" />
+            <img v-if="recipe.vegetarian" :src="vegetarian_img" class="icon" />
           </li>
           <li>
             <img v-if="recipe.glutenFree" :src="gluten_free_img" class="icon" />
@@ -53,7 +62,7 @@
             </ul>
             Instructions:
             <ol>
-              <li v-for="ins in instrucions" :key="ins">
+              <li v-for="ins in instructions" :key="ins">
                 {{ ins }}
               </li>
             </ol>
@@ -68,24 +77,27 @@
 <script>
 import {
   mockGetRecipeFullDetails,
-  mockGetInstuctions,
+  mockGetInstructions,
   mockAddToFavorites,
   mockRemoveFromFavorites,
   mockCheckIfFavorite,
+  mockLikeRecipe,
+  mockCheckIfLiked,
 } from "../services/recipes.js";
 
 export default {
   data() {
     return {
-      instrucions: [],
+      instructions: [],
       recipe: null,
       vegan_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegen%20friendly.png?raw=true",
       gluten_free_img:
         "https://cdn-icons-png.flaticon.com/256/4876/4876700.png",
-      vegeterian_img:
+      vegetarian_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegetarian-icon.png?raw=true",
       isFavorited: false,
+      isLiked: false,
     };
   },
 
@@ -93,6 +105,7 @@ export default {
     this.created();
     this.updateRecipes();
     this.checkIfFavorite();
+    this.checkIfLiked();
   },
 
   methods: {
@@ -100,7 +113,6 @@ export default {
       try {
         let response;
 
-        response = null;
         response = mockGetRecipeFullDetails(this.$route.params.recipeId);
 
         if (response === null) this.$router.replace("/NotFound");
@@ -140,13 +152,13 @@ export default {
     },
     async updateRecipes() {
       try {
-        const response = mockGetInstuctions(this.$route.params.recipeId);
+        const response = mockGetInstructions(this.$route.params.recipeId);
 
         console.log(response);
-        const analyzedInstructions = response.data.instrucions;
+        const analyzedInstructions = response.data.instructions;
         console.log(analyzedInstructions);
-        this.instrucions = [];
-        this.instrucions.push(...analyzedInstructions);
+        this.instructions = [];
+        this.instructions.push(...analyzedInstructions);
       } catch (error) {
         console.log(error);
       }
@@ -160,10 +172,27 @@ export default {
         console.log(error);
       }
     },
+    async checkIfLiked() {
+      try {
+        const response = await mockCheckIfLiked(this.$route.params.recipeId);
+        console.log("Like check response:", response.data);
+        this.isLiked = response.data.isLiked;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     toggleFavorite() {
       this.isFavorited = !this.isFavorited;
       if (this.isFavorited) {
         mockAddToFavorites(this.$route.params.recipeId);
+      } else {
+        mockRemoveFromFavorites(this.$route.params.recipeId);
+      }
+    },
+    toggleLike() {
+      this.isLiked = !this.isLiked;
+      if (this.isLiked) {
+        mockLikeRecipe(this.$route.params.recipeId);
       } else {
         mockRemoveFromFavorites(this.$route.params.recipeId);
       }
@@ -215,21 +244,30 @@ ul.recipe-overview li img.icon {
   text-align: center;
 }
 
-.favorite-button {
+.button-group {
   position: absolute;
   top: 80px; /* Adjusted to move it slightly down */
   right: 30px; /* Adjusted to move it slightly left */
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.favorite-button,
+.like-button {
   padding: 8px;
   font-size: 24px; /* Adjusted for icon size */
   color: #ffffff; /* Default color */
-  background-color: #ff7f00; /* Orange circle background color */
   width: 40px; /* Set width equal to height to ensure a perfect circle */
   height: 40px; /* Set height equal to width */
   border-radius: 50%; /* Make it a circle */
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background color */
-  line-height: 24px; /* Ensure the star icon is vertically centered */
+  line-height: 24px; /* Ensure the icon is vertically centered */
+}
+
+.favorite-button {
+  background-color: #ff7f00; /* Orange circle background color */
 }
 
 .favorite-button:hover {
@@ -242,5 +280,21 @@ ul.recipe-overview li img.icon {
 
 .favorite-button.favorited .fa-star {
   color: #ffffff; /* Change star icon color to white when favorited */
+}
+
+.like-button {
+  background-color: #ff4d4d; /* Red circle background color */
+}
+
+.like-button:hover {
+  background-color: #cc0000; /* Change background color on hover */
+}
+
+.like-button.liked {
+  color: #ffffff; /* Change button color to white when liked */
+}
+
+.like-button.liked .fa-heart {
+  color: #ffffff; /* Change heart icon color to white when liked */
 }
 </style>
