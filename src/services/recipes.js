@@ -2,6 +2,7 @@
 import recipe_full_view1 from "../assets/mocks/recipe_full_view1.json";
 import recipe_preview1 from "../assets/mocks/recipe_preview1.json";
 let favoriteDictionary = {};
+let watchedDictionary = {};
 
 export function mockGetRecipesPreview(amount = 1) {
   const recipeIds = Object.keys(recipe_preview1);
@@ -34,6 +35,27 @@ export function mockGetInstructions(recipeId) {
   return {
     data: { instrucions: recipe_full_view1[recipeId].analyzedInstructions },
   };
+}
+
+export function mockAddToWatched(recipeId) {
+  watchedDictionary[recipeId] = recipe_preview1[recipeId];
+}
+
+export function mockRemoveFromWatched(recipeId) {
+  delete watchedDictionary[recipeId];
+}
+
+export function mockGetWatched() {
+  let recipes = [];
+  for (let key in watchedDictionary) {
+    recipes.push(watchedDictionary[key]);
+  }
+
+  return { data: { recipes: recipes } };
+}
+
+export function mockCheckIfWatched(recipeId) {
+  return { data: { isWatched: recipeId in watchedDictionary } };
 }
 
 export function mockAddToFavorites(recipeId) {

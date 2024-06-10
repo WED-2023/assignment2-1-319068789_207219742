@@ -5,7 +5,9 @@
         <router-link :to="{ name: 'main' }" class="brand"
           >Vue Recipes</router-link
         >
-        <router-link :to="{ name: 'search' }">🔍 Search</router-link>
+        <router-link :to="{ name: 'about' }">About</router-link>
+        <router-link :to="{ name: 'search' }">🔍 Search Recipe</router-link>
+
         <span v-if="!$root.store.username">
           Hello Guest:
           <router-link :to="{ name: 'register' }">Register</router-link>

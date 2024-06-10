@@ -2,27 +2,25 @@
   <div class="container">
     <h1 class="title">Main Page</h1>
     <div class="main-content">
-      <div class="left-section">
+      <div class="section left-section">
         <RecipePreviewList
           title="Random Recipes"
           listType="randomRecipes"
           class="center"
         />
       </div>
-      <div class="right-section">
-        <router-link v-if="!$root.store.username" to="/login" tag="button"
-          >You need to Login to view this</router-link
-        >
+      <div class="section right-section">
+        <router-link v-if="!$root.store.username" to="/login" tag="button">
+          You need to Login to view this
+        </router-link>
 
         <RecipePreviewList
           title="Last Viewed Recipes"
           listType="lastRecipes"
           :class="{
-            RandomRecipes: true,
             blur: !$root.store.username,
             center: true,
           }"
-          disabled
         />
       </div>
     </div>
@@ -61,16 +59,27 @@ export default {
 
 .section {
   flex-basis: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.section-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
+.left-section {
+  width: 45%; /* Fixed width for consistency */
+}
+
+.right-section {
+  width: 45%; /* Fixed width for consistency */
+  position: relative;
+}
+
+.blur {
+  filter: blur(4px);
+  pointer-events: none;
 }
 
 .recipe-preview-list {
+  width: 100%; /* Ensure the list takes up the full width of its container */
   margin-bottom: 30px;
 }
 

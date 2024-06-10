@@ -3,6 +3,7 @@
     <router-link
       :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
       class="recipe-preview"
+      @click.native="handleWatched"
     >
       <div class="recipe-body">
         <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
@@ -40,6 +41,9 @@
     >
       <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
     </button>
+    <div v-if="isWatched" class="watched-indicator">
+      <i class="fas fa-eye"></i> Watched
+    </div>
   </div>
 </template>
 
@@ -48,6 +52,8 @@ import {
   mockAddToFavorites,
   mockRemoveFromFavorites,
   mockCheckIfFavorite,
+  mockAddToWatched,
+  mockCheckIfWatched,
 } from "../services/recipes.js";
 
 export default {
@@ -61,6 +67,7 @@ export default {
       vegeterian_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegetarian-icon.png?raw=true",
       isFavorited: false,
+      isWatched: false,
     };
   },
   props: {
@@ -71,6 +78,7 @@ export default {
   },
   async mounted() {
     this.checkIfFavorite();
+    this.checkIfWatched();
     await this.loadImage();
   },
   methods: {
@@ -79,6 +87,15 @@ export default {
         const response = await mockCheckIfFavorite(this.recipe.id);
         console.log("Favorite check response:", response.data);
         this.isFavorited = response.data.isFavorite;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async checkIfWatched() {
+      try {
+        const response = await mockCheckIfWatched(this.recipe.id);
+        console.log("Watched check response:", response.data);
+        this.isWatched = response.data.isWatched;
       } catch (error) {
         console.log(error);
       }
@@ -97,6 +114,12 @@ export default {
         mockAddToFavorites(this.recipe.id);
       } else {
         mockRemoveFromFavorites(this.recipe.id);
+      }
+    },
+    handleWatched() {
+      if (!this.isWatched) {
+        this.isWatched = true;
+        mockAddToWatched(this.recipe.id);
       }
     },
   },
@@ -139,8 +162,8 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the area */
-  aspect-ratio: 16/9; /* Maintain a specific aspect ratio */
+  object-fit: cover;
+  aspect-ratio: 16/9;
 }
 
 .recipe-preview .recipe-footer {
@@ -157,10 +180,10 @@ export default {
   text-align: left;
   color: #000;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis; /* Adds ellipsis at the end if the text overflows */
+  text-overflow: ellipsis;
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview {
@@ -211,5 +234,22 @@ export default {
 
 .favorite-button.favorited .fa-star {
   color: #ffffff;
+}
+
+.watched-indicator {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 2px 4px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.watched-indicator i {
+  margin-right: 4px;
 }
 </style>
