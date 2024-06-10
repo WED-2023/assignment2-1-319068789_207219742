@@ -112,5 +112,8 @@ export function mockUploadRecipe(
   time,
   servings,
   ingredients,
-  instructions
+  instructions,
+  selectedCuisines,
+  selectedDiets,
+  selectedIntolerances
 ) {}

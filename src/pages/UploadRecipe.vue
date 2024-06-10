@@ -73,6 +73,59 @@
         <button type="button" @click="addInstruction">+</button>
       </div>
 
+      <div class="filters">
+        <div class="filter-category">
+          <h4>Cuisine</h4>
+          <div
+            v-for="(cuisine, index) in cuisines"
+            :key="index"
+            class="filter-option"
+          >
+            <input
+              type="checkbox"
+              :id="'cuisine-' + cuisine"
+              :value="cuisine"
+              v-model="selectedCuisines"
+            />
+            <label :for="'cuisine-' + cuisine">{{ cuisine }}</label>
+          </div>
+        </div>
+
+        <div class="filter-category">
+          <h4>Diet</h4>
+          <div
+            v-for="(diet, index) in diets"
+            :key="index"
+            class="filter-option"
+          >
+            <input
+              type="checkbox"
+              :id="'diet-' + diet"
+              :value="diet"
+              v-model="selectedDiets"
+            />
+            <label :for="'diet-' + diet">{{ diet }}</label>
+          </div>
+        </div>
+
+        <div class="filter-category">
+          <h4>Intolerances</h4>
+          <div
+            v-for="(intolerance, index) in intolerances"
+            :key="index"
+            class="filter-option"
+          >
+            <input
+              type="checkbox"
+              :id="'intolerance-' + intolerance"
+              :value="intolerance"
+              v-model="selectedIntolerances"
+            />
+            <label :for="'intolerance-' + intolerance">{{ intolerance }}</label>
+          </div>
+        </div>
+      </div>
+
       <button type="submit">Upload Recipe</button>
     </form>
   </div>
@@ -90,6 +143,36 @@ export default {
       servings: "",
       ingredients: [{ name: "" }],
       instructions: [{ text: "" }],
+      selectedCuisines: [],
+      selectedDiets: [],
+      selectedIntolerances: [],
+      cuisines: ["Mexican", "Italian", "Chinese", "Indian", "Greek", "Latine"],
+      diets: [
+        "Ketogenic",
+        "Vegetarian",
+        "Lacto-Vegetarian",
+        "Ovo-Vegetarian",
+        "Vegan",
+        "Pescetarian",
+        "Paleo",
+        "Primal",
+        "Low FODMAP",
+        "Whole30",
+      ],
+      intolerances: [
+        "Dairy",
+        "Egg",
+        "Gluten",
+        "Grain",
+        "Peanut",
+        "Seafood",
+        "Sesame",
+        "Shellfish",
+        "Soy",
+        "Sulfite",
+        "Tree Nut",
+        "Wheat",
+      ],
     };
   },
   methods: {
@@ -116,7 +199,10 @@ export default {
           this.time,
           this.servings,
           this.ingredients,
-          this.instructions
+          this.instructions,
+          this.selectedCuisines,
+          this.selectedDiets,
+          this.selectedIntolerances
         );
         if (!response.ok) {
           throw new Error("Failed to upload recipe");
@@ -214,5 +300,31 @@ button[type="button"] {
 
 button[type="button"]:hover {
   background-color: #0056b3;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.filter-category {
+  width: 30%;
+}
+
+.filter-category h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.filter-option input[type="checkbox"] {
+  margin-right: 10px;
 }
 </style>

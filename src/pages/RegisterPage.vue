@@ -118,6 +118,15 @@
     >
       Register failed: {{ form.submitError }}
     </b-alert>
+    <b-alert
+      class="mt-2"
+      v-if="usernameExistsError"
+      variant="danger"
+      dismissible
+      show
+    >
+      Username already exists. Please choose a different one.
+    </b-alert>
     <!-- <b-card class="mt-3 md-3" header="Form Data Result">
       <pre class="m-0"><strong>form:</strong> {{ form }}</pre>
       <pre class="m-0"><strong>$v.form:</strong> {{ $v.form }}</pre>
@@ -134,7 +143,7 @@ import {
   alpha,
   sameAs,
 } from "vuelidate/lib/validators";
-import { mockRegister } from "../services/auth.js";
+import { mockRegister, mockCheckIfUserNameExist } from "../services/auth.js";
 
 const hasDigit = (value) => /\d/.test(value);
 const hasSpecialChar = (value) => /[!@#$%^&*(),.?":{}|<>]/.test(value);
@@ -156,6 +165,7 @@ export default {
       countries: [{ value: null, text: "", disabled: true }],
       errors: [],
       validated: false,
+      usernameExistsError: false, // Add this data property
     };
   },
   validations: {
@@ -195,9 +205,12 @@ export default {
           password: this.form.password,
         };
 
-        const response = mockRegister(userDetails);
-
-        this.$router.push("/login");
+        if (mockCheckIfUserNameExist(this.form.username)) {
+          this.usernameExistsError = true; // Set the error flag
+        } else {
+          const response = await mockRegister(userDetails);
+          this.$router.push("/login");
+        }
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
@@ -208,6 +221,7 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
+      this.usernameExistsError = false; // Reset the error flag on each submit
       this.Register();
     },
     onReset() {
