@@ -7,6 +7,9 @@
     <b-row v-for="r in recipes" :key="r.id">
       <RecipePreview class="recipePreview" :recipe="r" />
     </b-row>
+    <div v-if="listType === 'randomRecipes'" class="button-container">
+      <button @click="updateRecipes">Show Me Another 3 Random Recipes</button>
+    </div>
   </b-container>
 </template>
 
@@ -75,5 +78,27 @@ export default {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Specify a special font family */
   color: #333; /* Adjust the color as needed */
   margin-bottom: 1rem; /* Add some spacing between the title and the content */
+}
+
+.button-container {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ff7f00;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e65c00;
 }
 </style>

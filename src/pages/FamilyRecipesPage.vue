@@ -47,3 +47,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.left-section {
+  width: 45%;
+}
+</style>

@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'main' }" class="brand"
           >Vue Recipes</router-link
         >
-        <router-link :to="{ name: 'search' }">Search</router-link>
+        <router-link :to="{ name: 'search' }">🔍 Search</router-link>
         <span v-if="!$root.store.username">
           Hello Guest:
           <router-link :to="{ name: 'register' }">Register</router-link>
@@ -29,7 +29,7 @@
       </div>
       <div class="nav-right">
         <div class="dropdown right">
-          <button class="dropbtn">{{ $root.store.username }}</button>
+          <button class="dropbtn">👤 {{ $root.store.username }}</button>
           <div class="dropdown-content">
             <button @click="Logout">Logout</button>
           </div>
@@ -171,11 +171,11 @@ main {
 }
 
 .right .dropbtn {
-  background-color: #2c3e50;
+  background-color: #00c3ff;
 }
 
 .right .dropbtn:hover {
-  background-color: #192836;
+  background-color: #14b5e6;
   color: #fff;
 }
 </style>

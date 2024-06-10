@@ -110,22 +110,25 @@ export default {
   width: 90%;
   height: 100%;
   margin: 10px;
-  border-radius: 12px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  overflow: hidden; /* Ensure children are clipped within the rounded corners */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
-  background-color: #fff; /* White background */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
 }
+
 .recipe-preview-container:hover {
-  transform: scale(1.05); /* Scale the container up slightly on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
 .recipe-preview {
   display: inline-block;
   width: 100%;
   height: 100%;
   position: relative;
 }
+
 .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
@@ -133,14 +136,11 @@ export default {
 }
 
 .recipe-preview .recipe-body .main-recipe-image {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures image covers the area */
+  object-fit: cover; /* Ensures the image covers the area */
+  aspect-ratio: 16/9; /* Maintain a specific aspect ratio */
 }
 
 .recipe-preview .recipe-footer {
@@ -153,59 +153,63 @@ export default {
   padding: 10px 10px;
   width: 100%;
   font-size: 14pt;
-  font-weight: bold; /* Bold title */
+  font-weight: bold;
   text-align: left;
-  color: #000; /* Change font color to black */
+  color: #000;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds ellipsis at the end if the text overflows */
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview {
   padding: 10px;
   width: 100%;
   display: flex;
-  justify-content: space-around; /* Evenly space items */
+  justify-content: space-around;
   margin-bottom: 0;
-  list-style-type: none; /* Remove default list styling */
+  list-style-type: none;
 }
 
 .recipe-preview .recipe-footer ul.recipe-overview li {
   text-align: center;
-  color: #000; /* Change font color to black */
+  color: #000;
 }
 
-/* New CSS rule for smaller icons */
 .recipe-preview .recipe-footer ul.recipe-overview li img.icon {
-  width: 40px; /* Adjust the size as needed */
-  height: 40px; /* Adjust the size as needed */
-  margin: 0 auto; /* Center the image */
-  display: block; /* Ensure the image is a block element */
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  display: block;
 }
 
 .favorite-button {
   position: absolute;
-  top: 8px; /* Adjusted to move it slightly down */
-  right: 8px; /* Adjusted to move it slightly left */
+  top: 8px;
+  right: 8px;
   padding: 8px;
-  font-size: 24px; /* Adjusted for icon size */
-  color: #ffffff; /* Default color */
-  background-color: #ff7f00; /* Orange circle background color */
-  width: 40px; /* Set width equal to height to ensure a perfect circle */
-  height: 40px; /* Set height equal to width */
-  border-radius: 50%; /* Make it a circle */
+  font-size: 24px;
+  color: #ffffff;
+  background-color: #ff7f00;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background color */
-  line-height: 24px; /* Ensure the star icon is vertically centered */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  line-height: 24px;
 }
 
 .favorite-button:hover {
-  background-color: #e65c00; /* Change background color on hover */
+  background-color: #e65c00;
 }
 
 .favorite-button.favorited {
-  color: #ffffff; /* Change button color to white when favorited */
+  color: #ffffff;
 }
 
 .favorite-button.favorited .fa-star {
-  color: #ffffff; /* Change star icon color to white when favorited */
+  color: #ffffff;
 }
 </style>
