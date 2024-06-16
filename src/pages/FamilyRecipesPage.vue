@@ -11,7 +11,7 @@
 
 <script>
 import RecipePreview from "../components/RecipePreview";
-import { mockGetFamilyRecipes } from "../services/recipes.js";
+import { mockGetFamilyRecipesPreview } from "../services/recipes.js";
 export default {
   name: "RecipePreviewList",
   components: {
@@ -33,7 +33,7 @@ export default {
         //   this.$root.store.server_domain + "/recipes/random",
         // );
 
-        const response = mockGetFamilyRecipes();
+        const response = mockGetFamilyRecipesPreview();
 
         console.log(response);
         const recipes = response.data.recipes;

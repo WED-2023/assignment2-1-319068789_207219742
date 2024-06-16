@@ -57,7 +57,7 @@
                 v-for="(r, index) in recipe.extendedIngredients"
                 :key="index + '_' + r.id"
               >
-                {{ r.original }}
+                {{ r.amount }} {{ r.unit }} {{ r.name }}
               </li>
             </ul>
             Instructions:

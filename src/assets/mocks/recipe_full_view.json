@@ -1786,5 +1786,278 @@
       }
     ],
     "servings": 2
+  },
+  "77777": {
+    "id": 77777,
+    "title": "Moroccan Chickpea Stew",
+    "readyInMinutes": 40,
+    "image": "https://www.tastingtable.com/img/gallery/moroccan-chickpea-stew-recipe/intro-1690998735.jpg",
+    "servings": 4,
+    "aggregateLikes": 325,
+    "vegetarian": true,
+    "vegan": true,
+    "glutenFree": true,
+    "summary": "Moroccan Chickpea Stew is a hearty and flavorful dish made with chickpeas, tomatoes, and a blend of Moroccan spices. It's perfect for a nutritious and comforting meal.",
+    "extendedIngredients": [
+      {
+        "id": 16058,
+        "name": "chickpeas",
+        "amount": 2,
+        "unit": "cups",
+        "meta": ["cooked"]
+      },
+      {
+        "id": 11529,
+        "name": "tomatoes",
+        "amount": 2,
+        "unit": "cups",
+        "meta": ["diced"]
+      },
+      {
+        "id": 11282,
+        "name": "onion",
+        "amount": 1,
+        "unit": "",
+        "meta": ["chopped"]
+      },
+      {
+        "id": 11821,
+        "name": "carrots",
+        "amount": 2,
+        "unit": "",
+        "meta": ["sliced"]
+      },
+      {
+        "id": 1032027,
+        "name": "cumin",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 1002010,
+        "name": "cinnamon",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 2013,
+        "name": "coriander",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 1002044,
+        "name": "cilantro",
+        "amount": 1,
+        "unit": "tbsp",
+        "meta": ["fresh", "chopped"]
+      },
+      {
+        "id": 1002047,
+        "name": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": []
+      },
+      {
+        "id": 1002030,
+        "name": "black pepper",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["freshly ground"]
+      }
+    ],
+    "instructions": [
+      "Heat oil in a large pot over medium heat. Add the chopped onion and sliced carrots, and cook until softened.",
+      "Add the diced tomatoes, cooked chickpeas, ground cumin, ground cinnamon, ground coriander, salt, and pepper. Stir well to combine.",
+      "Add enough water to cover the ingredients, bring to a boil, then reduce the heat and simmer for 30 minutes.",
+      "Garnish with fresh chopped cilantro before serving."
+    ]
+  },
+  "88888": {
+    "id": 88888,
+    "title": "Persian Herb Frittata (Kuku Sabzi)",
+    "readyInMinutes": 35,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6cfhcJ-o7PJhi0maf8r00FMOATjs2pzoQuw&s",
+    "servings": 4,
+    "aggregateLikes": 290,
+    "vegetarian": true,
+    "vegan": false,
+    "glutenFree": true,
+    "summary": "Persian Herb Frittata, known as Kuku Sabzi, is a traditional Persian dish packed with fresh herbs and flavor. It's a perfect dish for a light meal or appetizer.",
+    "extendedIngredients": [
+      {
+        "id": 1123,
+        "name": "eggs",
+        "amount": 6,
+        "unit": "",
+        "meta": ["large"]
+      },
+      {
+        "id": 2044,
+        "name": "cilantro",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["fresh", "chopped"]
+      },
+      {
+        "id": 1002046,
+        "name": "dill",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["fresh", "chopped"]
+      },
+      {
+        "id": 11215,
+        "name": "garlic",
+        "amount": 2,
+        "unit": "cloves",
+        "meta": ["minced"]
+      },
+      {
+        "id": 11165,
+        "name": "green onions",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["chopped"]
+      },
+      {
+        "id": 2049,
+        "name": "parsley",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["fresh", "chopped"]
+      },
+      {
+        "id": 1002047,
+        "name": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": []
+      },
+      {
+        "id": 1002030,
+        "name": "black pepper",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["freshly ground"]
+      },
+      {
+        "id": 4582,
+        "name": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "meta": []
+      }
+    ],
+    "instructions": [
+      "Preheat oven to 350°F (175°C).",
+      "In a large bowl, whisk the eggs until well beaten.",
+      "Add the fresh chopped herbs, minced garlic, chopped green onions, salt, and black pepper to the eggs. Mix well.",
+      "Heat olive oil in an oven-safe skillet over medium heat. Pour the egg and herb mixture into the skillet.",
+      "Cook on the stovetop for about 5 minutes, then transfer the skillet to the preheated oven and bake for 20-25 minutes, until fully set.",
+      "Remove from oven, let cool slightly, and slice into wedges to serve."
+    ]
+  },
+  "99999": {
+    "id": 99999,
+    "title": "Moroccan Lamb Tagine",
+    "readyInMinutes": 90,
+    "image": "https://food-images.files.bbci.co.uk/food/recipes/moroccanlambtagine_6696_16x9.jpg",
+    "servings": 6,
+    "aggregateLikes": 400,
+    "vegetarian": false,
+    "vegan": false,
+    "glutenFree": true,
+    "summary": "Moroccan Lamb Tagine is a rich and flavorful stew made with lamb, dried fruits, and a variety of spices, slow-cooked to perfection. It's a traditional Moroccan dish that's perfect for a special occasion.",
+    "extendedIngredients": [
+      {
+        "id": 10062,
+        "name": "lamb shoulder",
+        "amount": 2,
+        "unit": "lbs",
+        "meta": ["boneless", "cubed"]
+      },
+      {
+        "id": 11282,
+        "name": "onion",
+        "amount": 1,
+        "unit": "",
+        "meta": ["chopped"]
+      },
+      {
+        "id": 11215,
+        "name": "garlic",
+        "amount": 4,
+        "unit": "cloves",
+        "meta": ["minced"]
+      },
+      {
+        "id": 9150,
+        "name": "apricots",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["dried"]
+      },
+      {
+        "id": 9089,
+        "name": "prunes",
+        "amount": 1,
+        "unit": "cup",
+        "meta": ["pitted"]
+      },
+      {
+        "id": 1032027,
+        "name": "cumin",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 1002010,
+        "name": "cinnamon",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 2013,
+        "name": "coriander",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["ground"]
+      },
+      {
+        "id": 1102047,
+        "name": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": []
+      },
+      {
+        "id": 1002030,
+        "name": "black pepper",
+        "amount": 1,
+        "unit": "tsp",
+        "meta": ["freshly ground"]
+      },
+      {
+        "id": 4582,
+        "name": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "meta": []
+      }
+    ],
+    "instructions": [
+      "Heat olive oil in a large pot or tagine over medium heat. Add the chopped onion and cook until softened.",
+      "Add the minced garlic and cubed lamb, and cook until the lamb is browned on all sides.",
+      "Stir in the ground cumin, ground cinnamon, ground coriander, salt, and pepper. Cook for another 2 minutes.",
+      "Add the dried apricots and prunes, and enough water to cover the ingredients. Bring to a boil, then reduce heat and simmer for 1 hour, until the lamb is tender.",
+      "Serve hot with couscous or bread."
+    ]
   }
 }

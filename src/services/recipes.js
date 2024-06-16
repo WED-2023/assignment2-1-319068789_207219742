@@ -4,6 +4,16 @@ import recipe_preview from "../assets/mocks/recipe_preview.json";
 let favoriteDictionary = {};
 let watchedDictionary = {};
 
+export function mockGetFamilyRecipesPreview() {
+  let recipes = [];
+
+  recipes.push(recipe_preview[77777]);
+  recipes.push(recipe_preview[88888]);
+  recipes.push(recipe_preview[99999]);
+
+  return { data: { recipes: recipes } };
+}
+
 export function mockGetRecipesPreview(amount = 1) {
   const recipeIds = Object.keys(recipe_preview);
   const totalRecipes = recipeIds.length;
@@ -80,7 +90,13 @@ export function mockCheckIfFavorite(recipeId) {
 }
 
 // Mock functions to simulate API calls
-export function mockSearchRecipes(query, amount, selectedCuisines, selectedDiets, selectedIntolerances) {
+export function mockSearchRecipes(
+  query,
+  amount,
+  selectedCuisines,
+  selectedDiets,
+  selectedIntolerances
+) {
   return mockGetRecipesPreview(amount);
 }
 
@@ -92,13 +108,18 @@ export function mockGetMyRecipes() {
   return mockGetRecipesPreview(3);
 }
 
-export function mockGetFamilyRecipes() {
-  return mockGetRecipesPreview(3);
-}
-
 export function mockLikeRecipe(recipeId) {}
 
 export function mockCheckIfLiked(recipeId) {}
 
-export function mockUploadRecipe(title, image, time, servings, ingredients, instructions,
-  selectedCuisines, selectedDiets, selectedIntolerances) {}
+export function mockUploadRecipe(
+  title,
+  image,
+  time,
+  servings,
+  ingredients,
+  instructions,
+  selectedCuisines,
+  selectedDiets,
+  selectedIntolerances
+) {}
