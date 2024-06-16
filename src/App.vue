@@ -18,13 +18,9 @@
           <div class="dropdown">
             <button class="dropbtn">Personal</button>
             <div class="dropdown-content">
-              <router-link :to="{ name: 'favorites' }"
-                >Favorites Recipes</router-link
-              >
+              <router-link :to="{ name: 'favorites' }">Favorites Recipes</router-link>
               <router-link :to="{ name: 'myRecipes' }">My Recipes</router-link>
-              <router-link :to="{ name: 'familyRecipes' }"
-                >Family Recipes</router-link
-              >
+              <router-link :to="{ name: 'familyRecipes' }">Family Recipes</router-link>
             </div>
           </div>
         </span>
