@@ -4,7 +4,7 @@
     <div class="main-content">
       <div class="section left-section">
         <RecipePreviewList
-          title="Random Recipes"
+          title="Explore this recipes"
           listType="randomRecipes"
           class="center"
         />

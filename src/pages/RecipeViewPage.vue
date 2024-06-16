@@ -62,7 +62,7 @@
             </ul>
             Instructions:
             <ol>
-              <li v-for="ins in instructions" :key="ins">
+              <li v-for="ins in recipe.instructions" :key="ins">
                 {{ ins }}
               </li>
             </ol>
