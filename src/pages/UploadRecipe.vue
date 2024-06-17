@@ -204,7 +204,7 @@ export default {
           this.selectedDiets,
           this.selectedIntolerances
         );
-        if (!response.ok) {
+        if (response.status != 200) {
           throw new Error("Failed to upload recipe");
         }
 

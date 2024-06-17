@@ -122,4 +122,8 @@ export function mockUploadRecipe(
   selectedCuisines,
   selectedDiets,
   selectedIntolerances
-) {}
+) {
+  return {
+    status: 200,
+  };
+}

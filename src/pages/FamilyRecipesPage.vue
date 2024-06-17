@@ -1,49 +1,21 @@
 <template>
   <div class="container">
     <h1 class="title">Family Recipes Page</h1>
-    <div class="left-section">
-      <b-row v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </b-row>
+    <div class="mid-section">
+      <RecipePreviewList
+        listType="familyRecipes"
+        class="recipePreview"
+        :recipe="r"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import RecipePreview from "../components/RecipePreview";
-import { mockGetFamilyRecipesPreview } from "../services/recipes.js";
+import RecipePreviewList from "../components/RecipePreviewList";
 export default {
-  name: "RecipePreviewList",
   components: {
-    RecipePreview,
-  },
-
-  data() {
-    return {
-      recipes: [],
-    };
-  },
-  mounted() {
-    this.updateRecipes();
-  },
-  methods: {
-    async updateRecipes() {
-      try {
-        // const response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/random",
-        // );
-
-        const response = mockGetFamilyRecipesPreview();
-
-        console.log(response);
-        const recipes = response.data.recipes;
-        console.log(recipes);
-        this.recipes = [];
-        this.recipes.push(...recipes);
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    RecipePreviewList,
   },
 };
 </script>
@@ -52,4 +24,8 @@ export default {
 .left-section {
   width: 45%;
 }
+</style>
+
+<style scoped>
+@import "@/scss/form-style.scss";
 </style>

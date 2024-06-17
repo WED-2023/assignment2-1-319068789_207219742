@@ -1,12 +1,21 @@
 <template>
   <b-container>
     <h3 class="list-title">
-      {{ title }}:
+      {{ title }}
       <slot></slot>
     </h3>
-    <b-row v-for="r in recipes" :key="r.id">
-      <RecipePreview class="recipePreview" :recipe="r" />
-    </b-row>
+    <template v-if="isTwoPerRow">
+      <b-row>
+        <b-col cols="6" v-for="r in recipes" :key="r.id">
+          <RecipePreview class="recipePreview" :recipe="r" />
+        </b-col>
+      </b-row>
+    </template>
+    <template v-else>
+      <b-row v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipePreview" :recipe="r" />
+      </b-row>
+    </template>
     <div v-if="listType === 'randomRecipes'" class="button-container">
       <button @click="updateRecipes">Show Me Another 3 Random Recipes</button>
     </div>
@@ -18,6 +27,9 @@ import RecipePreview from "./RecipePreview.vue";
 import {
   mockGetRecipesPreview,
   mockGetLastRecipes,
+  mockGetFamilyRecipesPreview,
+  mockGetFavorites,
+  mockGetMyRecipes,
 } from "../services/recipes.js";
 
 export default {
@@ -33,7 +45,14 @@ export default {
     listType: {
       type: String,
       required: true,
-      validator: (value) => ["randomRecipes", "lastRecipes"].includes(value),
+      validator: (value) =>
+        [
+          "randomRecipes",
+          "lastRecipes",
+          "myRecipes",
+          "familyRecipes",
+          "favorites",
+        ].includes(value),
     },
   },
   data() {
@@ -44,19 +63,34 @@ export default {
   mounted() {
     this.updateRecipes();
   },
+  computed: {
+    isTwoPerRow() {
+      return ["favorites", "myRecipes", "familyRecipes"].includes(
+        this.listType
+      );
+    },
+  },
   methods: {
     async updateRecipes() {
       try {
         const amountToFetch = 3; // Set this to how many recipes you want to fetch
-        let response;
-        if (this.listType === "randomRecipes") {
-          response = mockGetRecipesPreview(amountToFetch);
-        } else if (this.listType === "lastRecipes") {
-          response = mockGetLastRecipes(amountToFetch);
-        }
+        const fetchFunctions = {
+          randomRecipes: () => mockGetRecipesPreview(amountToFetch),
+          lastRecipes: () => mockGetLastRecipes(amountToFetch),
+          familyRecipes: () => mockGetFamilyRecipesPreview(),
+          myRecipes: () => mockGetMyRecipes(),
+          favorites: () => mockGetFavorites(),
+        };
+
+        const fetchFunction = fetchFunctions[this.listType];
+        if (!fetchFunction) throw new Error("Invalid list type");
+
+        const response = await fetchFunction();
         console.log(response);
+
         const recipes = response.data.recipes;
         console.log(recipes);
+
         this.recipes = [];
         this.recipes.push(...recipes);
       } catch (error) {

@@ -16,7 +16,6 @@
           <option value="15">15</option>
         </select>
       </div>
-
       <button @click="searchRecipes">Search</button>
       <div
         class="dropdown"
@@ -33,6 +32,15 @@
           </li>
         </ul>
       </div>
+    </div>
+
+    <!-- Sorting dropdown -->
+    <div class="sort-container">
+      <label for="sort" class="sort-label">Sort by:</label>
+      <select v-model="sortCriteria" id="sort" class="sort-input">
+        <option value="readyInMinutes">Ready in Minutes</option>
+        <option value="aggregateLikes">Likes</option>
+      </select>
     </div>
 
     <div class="main-content">
@@ -116,6 +124,7 @@ export default {
       lastSearches: [],
       showDropdown: false,
       amount: 5, // Default amount of results
+      sortCriteria: "readyInMinutes", // Default sorting criteria
       selectedCuisines: [],
       selectedDiets: [],
       selectedIntolerances: [],
@@ -163,8 +172,12 @@ export default {
           this.selectedIntolerances
         );
         console.log(response);
-        const recipes = response.data.recipes;
+        let recipes = response.data.recipes;
         console.log(recipes);
+
+        // Sort recipes based on the selected criteria
+        recipes = this.sortRecipes(recipes, this.sortCriteria);
+
         this.recipes = [];
         this.recipes.push(...recipes);
         this.saveSearch(this.query);
@@ -172,6 +185,16 @@ export default {
         console.log(error);
       }
     },
+    sortRecipes(recipes, criteria, ascending = true) {
+      return recipes.sort((a, b) => {
+        if (ascending) {
+          return a[criteria] - b[criteria];
+        } else {
+          return b[criteria] - a[criteria];
+        }
+      });
+    },
+
     saveSearch(query) {
       let searches = JSON.parse(localStorage.getItem("lastSearches")) || [];
       searches = searches.filter((search) => search !== query);
@@ -192,6 +215,15 @@ export default {
       this.searchRecipes();
     },
   },
+  watch: {
+    sortCriteria(newCriteria) {
+      let ascending = true; // Default to ascending order
+      if (newCriteria === "aggregateLikes") {
+        ascending = false; // Likes should be sorted in descending order
+      }
+      this.recipes = this.sortRecipes(this.recipes, newCriteria, ascending);
+    },
+  },
 };
 </script>
 
@@ -210,7 +242,7 @@ export default {
 }
 
 .search-bar input[type="text"] {
-  flex: 1;
+  flex: 2; /* Input box will take twice the space */
   padding: 10px;
   font-size: 16px;
 }
@@ -232,7 +264,8 @@ export default {
 }
 
 .search-bar button {
-  padding: 10px 20px;
+  flex: 1; /* Button will take the remaining space */
+  padding: 10px 10px; /* Adjust padding for button size */
   font-size: 16px;
   background-color: #ff7f00;
   color: #fff;
@@ -315,5 +348,21 @@ export default {
 
 .filter-option label {
   font-size: 14px;
+}
+
+.sort-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sort-label {
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.sort-input {
+  padding: 10px;
+  font-size: 16px;
 }
 </style>

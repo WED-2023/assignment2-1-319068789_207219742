@@ -51,7 +51,10 @@
       <div class="recipe-body">
         <div class="wrapper">
           <div class="wrapped">
-            Ingredients:
+            <h4>Summary:</h4>
+            <p>{{ recipe.summary }}</p>
+
+            <h4>Ingredients:</h4>
             <ul>
               <li
                 v-for="(r, index) in recipe.extendedIngredients"
@@ -60,7 +63,8 @@
                 {{ r.amount }} {{ r.unit }} {{ r.name }}
               </li>
             </ul>
-            Instructions:
+
+            <h4>Instructions:</h4>
             <ol>
               <li v-for="ins in recipe.instructions" :key="ins">
                 {{ ins }}
@@ -129,6 +133,7 @@ export default {
           vegan,
           glutenFree,
           servings,
+          summary,
         } = response.data.recipe;
 
         let _recipe = {
@@ -143,6 +148,7 @@ export default {
           vegan,
           glutenFree,
           servings,
+          summary,
         };
 
         this.recipe = _recipe;
