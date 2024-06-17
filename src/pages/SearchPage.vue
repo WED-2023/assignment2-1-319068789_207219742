@@ -40,6 +40,7 @@
       <select v-model="sortCriteria" id="sort" class="sort-input">
         <option value="readyInMinutes">Ready in Minutes</option>
         <option value="aggregateLikes">Likes</option>
+        <option value="relevance">Relevance</option>
       </select>
     </div>
 
@@ -124,7 +125,7 @@ export default {
       lastSearches: [],
       showDropdown: false,
       amount: 5, // Default amount of results
-      sortCriteria: "readyInMinutes", // Default sorting criteria
+      sortCriteria: "relevance", // Default sorting criteria
       selectedCuisines: [],
       selectedDiets: [],
       selectedIntolerances: [],
@@ -171,21 +172,21 @@ export default {
           this.selectedDiets,
           this.selectedIntolerances
         );
-        console.log(response);
         let recipes = response.data.recipes;
-        console.log(recipes);
 
         // Sort recipes based on the selected criteria
         recipes = this.sortRecipes(recipes, this.sortCriteria);
 
-        this.recipes = [];
-        this.recipes.push(...recipes);
+        this.recipes = recipes;
         this.saveSearch(this.query);
       } catch (error) {
         console.log(error);
       }
     },
     sortRecipes(recipes, criteria, ascending = true) {
+      if (criteria === "relevance") {
+        return recipes; // Return the recipes as they are
+      }
       return recipes.sort((a, b) => {
         if (ascending) {
           return a[criteria] - b[criteria];
@@ -194,7 +195,6 @@ export default {
         }
       });
     },
-
     saveSearch(query) {
       let searches = JSON.parse(localStorage.getItem("lastSearches")) || [];
       searches = searches.filter((search) => search !== query);
@@ -221,7 +221,11 @@ export default {
       if (newCriteria === "aggregateLikes") {
         ascending = false; // Likes should be sorted in descending order
       }
-      this.recipes = this.sortRecipes(this.recipes, newCriteria, ascending);
+      if (newCriteria === "relevance") {
+        this.searchRecipes(); // Fetch and set the recipes in their default order
+      } else {
+        this.recipes = this.sortRecipes(this.recipes, newCriteria, ascending);
+      }
     },
   },
 };

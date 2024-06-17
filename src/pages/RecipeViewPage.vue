@@ -3,7 +3,7 @@
     <div v-if="recipe">
       <div class="recipe-header">
         <h1>{{ recipe.title }}</h1>
-        <div class="button-group">
+        <div v-if="$root.store.username" class="button-group">
           <button
             @click.stop.prevent="toggleLike"
             :class="{ liked: isLiked }"

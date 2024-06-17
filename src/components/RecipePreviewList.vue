@@ -5,14 +5,14 @@
       <slot></slot>
     </h3>
     <template v-if="isTwoPerRow">
-      <b-row>
+      <b-row class="custom-row">
         <b-col cols="6" v-for="r in recipes" :key="r.id">
           <RecipePreview class="recipePreview" :recipe="r" />
         </b-col>
       </b-row>
     </template>
     <template v-else>
-      <b-row v-for="r in recipes" :key="r.id">
+      <b-row v-for="r in recipes" :key="r.id" class="custom-row2">
         <RecipePreview class="recipePreview" :recipe="r" />
       </b-row>
     </template>
