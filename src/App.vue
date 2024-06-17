@@ -18,15 +18,19 @@
           <div class="dropdown">
             <button class="dropbtn">Personal</button>
             <div class="dropdown-content">
-              <router-link :to="{ name: 'favorites' }">Favorites Recipes</router-link>
+              <router-link :to="{ name: 'favorites' }"
+                >Favorites Recipes</router-link
+              >
               <router-link :to="{ name: 'myRecipes' }">My Recipes</router-link>
-              <router-link :to="{ name: 'familyRecipes' }">Family Recipes</router-link>
+              <router-link :to="{ name: 'familyRecipes' }"
+                >Family Recipes</router-link
+              >
             </div>
           </div>
         </span>
       </div>
       <div class="nav-right">
-        <div class="dropdown right">
+        <div v-if="$root.store.username" class="dropdown right">
           <button class="dropbtn">👤 {{ $root.store.username }}</button>
           <div class="dropdown-content">
             <button @click="Logout">Logout</button>

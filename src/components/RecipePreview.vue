@@ -34,13 +34,16 @@
         </ul>
       </div>
     </router-link>
-    <button
-      @click.stop.prevent="toggleFavorite"
-      :class="{ favorited: isFavorited }"
-      class="favorite-button"
-    >
-      <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
-    </button>
+    <div v-if="$root.store.username">
+      <button
+        @click.stop.prevent="toggleFavorite"
+        :class="{ favorited: isFavorited }"
+        class="favorite-button"
+      >
+        <i :class="[isFavorited ? 'fas fa-star' : 'far fa-star']"></i>
+      </button>
+    </div>
+
     <div v-if="isWatched" class="watched-indicator">
       <i class="fas fa-eye"></i> Watched
     </div>
