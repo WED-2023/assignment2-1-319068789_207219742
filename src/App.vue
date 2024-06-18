@@ -14,7 +14,6 @@
           <router-link :to="{ name: 'login' }">Login</router-link>
         </span>
         <span v-else>
-          <router-link :to="{ name: 'upload' }">Upload Recipe</router-link>
           <div class="dropdown">
             <button class="dropbtn">Personal</button>
             <div class="dropdown-content">
@@ -25,6 +24,7 @@
               <router-link :to="{ name: 'familyRecipes' }"
                 >Family Recipes</router-link
               >
+              <button @click="showModal = true">Upload Recipe</button>
             </div>
           </div>
         </span>
@@ -41,12 +41,28 @@
     <main>
       <router-view />
     </main>
+
+    <Modal :show="showModal" @close="showModal = false">
+      <UploadRecipe @upload-success="showModal = false" />
+    </Modal>
   </div>
 </template>
 
 <script>
+import Modal from "@/components/Modal.vue";
+import UploadRecipe from "@/components/UploadRecipe.vue";
+
 export default {
   name: "App",
+  components: {
+    Modal,
+    UploadRecipe,
+  },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
   methods: {
     Logout() {
       this.$root.store.logout();
