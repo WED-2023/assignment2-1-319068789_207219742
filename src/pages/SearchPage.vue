@@ -172,7 +172,12 @@ export default {
           this.selectedDiets,
           this.selectedIntolerances
         );
+
         let recipes = response.data.recipes;
+
+        if (recipes.length === 0) {
+          alert("No matching result");
+        }
 
         // Sort recipes based on the selected criteria
         recipes = this.sortRecipes(recipes, this.sortCriteria);
