@@ -3,6 +3,12 @@ import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
 let favoriteDictionary = {};
 let watchedDictionary = {};
+let searchSet = new Set();
+let isRegistered = false;
+
+export function mockSetRegistered() {
+  isRegistered = true;
+}
 
 export function mockGetFamilyRecipesPreview() {
   let recipes = [];
@@ -45,6 +51,25 @@ export function mockGetInstructions(recipeId) {
   return {
     data: { instrucions: recipe_full_view[recipeId].analyzedInstructions },
   };
+}
+
+export function mockAddToSearchHistory(lastSearch) {
+  if (isRegistered) {
+    searchSet.add(lastSearch);
+  }
+}
+
+export function mockClearSearchHistory() {
+  searchSet.clear();
+  isRegistered = false;
+}
+
+export function mockGetSearchHistory() {
+  let searchHistory = [];
+  for (const value of searchSet) {
+    searchHistory.push(value);
+  }
+  return searchHistory;
 }
 
 export function mockAddToWatched(recipeId) {

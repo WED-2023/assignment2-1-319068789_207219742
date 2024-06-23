@@ -111,7 +111,11 @@
 
 <script>
 import RecipePreview from "../components/RecipePreview";
-import { mockSearchRecipes } from "../services/recipes.js";
+import {
+  mockSearchRecipes,
+  mockGetSearchHistory,
+  mockAddToSearchHistory,
+} from "../services/recipes.js";
 
 export default {
   name: "RecipePreviewList",
@@ -201,18 +205,10 @@ export default {
       });
     },
     saveSearch(query) {
-      let searches = JSON.parse(localStorage.getItem("lastSearches")) || [];
-      searches = searches.filter((search) => search !== query);
-      searches.unshift(query);
-      if (searches.length > 5) {
-        searches.pop();
-      }
-      localStorage.setItem("lastSearches", JSON.stringify(searches));
-      this.loadLastSearches();
+      mockAddToSearchHistory(query);
     },
     loadLastSearches() {
-      this.lastSearches =
-        JSON.parse(localStorage.getItem("lastSearches")) || [];
+      this.lastSearches = mockGetSearchHistory();
     },
     selectSearch(query) {
       this.query = query;

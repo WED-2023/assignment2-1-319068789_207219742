@@ -12,6 +12,10 @@ const router = new VueRouter({
   routes,
 });
 
+import {
+  mockClearSearchHistory,
+  mockSetRegistered,
+} from "./services/recipes.js";
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -75,11 +79,13 @@ const shared_data = {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
+    mockSetRegistered();
   },
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
     this.username = undefined;
+    mockClearSearchHistory();
   },
 };
 console.log(shared_data);

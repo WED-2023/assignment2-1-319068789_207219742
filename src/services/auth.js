@@ -2,6 +2,7 @@
 
 export function mockLogin(credentials, success = true) {
   // Check if already logged in
+
   if (!success) {
     throw {
       status: 409,
