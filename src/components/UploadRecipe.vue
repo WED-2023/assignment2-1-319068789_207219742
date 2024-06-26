@@ -23,12 +23,24 @@
 
           <div class="form-group">
             <label for="time">Time to Make (minutes):</label>
-            <input type="number" v-model="time" id="time" required />
+            <input
+              type="number"
+              v-model.number="time"
+              id="time"
+              required
+              min="1"
+            />
           </div>
 
           <div class="form-group">
             <label for="servings">Number of Servings:</label>
-            <input type="number" v-model="servings" id="servings" required />
+            <input
+              type="number"
+              v-model.number="servings"
+              id="servings"
+              required
+              min="1"
+            />
           </div>
         </div>
 
@@ -227,6 +239,11 @@ export default {
       this.ingredients.splice(index, 1);
     },
     async uploadRecipe() {
+      if (!this.validateInputs()) {
+        alert("Time to make and Number of Servings must be greater than 1.");
+        return;
+      }
+
       try {
         const response = await mockUploadRecipe(
           this.title,
@@ -250,6 +267,14 @@ export default {
         console.error("Error uploading recipe:", error);
         alert("There was an error uploading your recipe. Please try again.");
       }
+    },
+    validateInputs() {
+      return (
+        Number.isInteger(this.time) &&
+        this.time > 1 &&
+        Number.isInteger(this.servings) &&
+        this.servings > 1
+      );
     },
     resetForm() {
       this.title = "";
@@ -275,7 +300,7 @@ export default {
 }
 
 .upload-recipe-container {
-  max-width: 1400px; /* Increased maximum width */
+  max-width: 1400px;
   margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -285,7 +310,7 @@ export default {
 .form-content {
   display: flex;
   justify-content: space-between;
-  gap: 40px; /* Increased space between form columns */
+  gap: 40px;
 }
 
 .form-group {
@@ -295,11 +320,11 @@ export default {
 .left-section,
 .mid-section,
 .right-section {
-  width: 33%; /* Adjusted width for each section */
+  width: 33%;
 }
 
 .ingredient-item input[type="text"] {
-  width: calc(115% - 50px); /* Adjusted width */
+  width: calc(115% - 50px);
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -307,7 +332,7 @@ export default {
 }
 
 .instruction-item textarea {
-  width: calc(115% - 50px); /* Adjusted width */
+  width: calc(115% - 50px);
   height: 60px;
   padding: 10px;
   font-size: 16px;
@@ -316,19 +341,19 @@ export default {
 }
 
 .addRemove-button {
-  padding: 6px; /* Adjusted padding */
+  padding: 6px;
   font-size: 16px;
-  background-color: #dc3545; /* Red color for remove button */
+  background-color: #dc3545;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 0px; /* Adjusted margin */
+  margin-left: 0px;
   margin-bottom: 9px;
 }
 
 .addRemove-button:hover {
-  background-color: #c82333; /* Darker red color on hover */
+  background-color: #c82333;
 }
 
 .label {
@@ -376,11 +401,11 @@ button[type="button"]:hover {
 
 .filter-column {
   flex: 1;
-  margin-right: 20px; /* Adjusted spacing between filter columns */
+  margin-right: 20px;
 }
 
 .filter-column:last-child {
-  margin-right: 0; /* Remove margin for the last column */
+  margin-right: 0;
 }
 
 .filter-category h4 {
