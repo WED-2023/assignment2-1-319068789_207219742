@@ -1,5 +1,20 @@
 // src/services/auth.js
 
+import axios from "axios";
+import store from "../store";
+
+console.log(store.state); // To see if the state is properly imported and has the server_domain
+const API_URL = "http://localhost:3000";
+
+export async function register(userDetails) {
+  try {
+    const response = await axios.post(`${API_URL}/auth/Register`, userDetails);
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+}
+
 export function mockLogin(credentials, success = true) {
   // Check if already logged in
 

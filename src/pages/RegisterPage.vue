@@ -200,7 +200,11 @@ import {
   sameAs,
   email,
 } from "vuelidate/lib/validators";
-import { mockRegister, mockCheckIfUserNameExist } from "../services/auth.js";
+import {
+  mockRegister,
+  mockCheckIfUserNameExist,
+  register,
+} from "../services/auth.js";
 
 const hasDigit = (value) => /\d/.test(value);
 const hasSpecialChar = (value) => /[!@#$%^&*(),.?":{}|<>]/.test(value);
@@ -281,7 +285,12 @@ export default {
         if (mockCheckIfUserNameExist(this.form.username)) {
           this.usernameExistsError = true; // Set the error flag
         } else {
-          const response = await mockRegister(userDetails);
+          const response = await register(userDetails);
+          if (response.status != 201) {
+            throw new Error("Failed to register");
+          }
+
+          alert("registered successfully!");
           this.$router.push("/login");
         }
       } catch (err) {
