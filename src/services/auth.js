@@ -1,17 +1,25 @@
 // src/services/auth.js
 
 import axios from "axios";
-import store from "../store";
 
-console.log(store.state); // To see if the state is properly imported and has the server_domain
-const API_URL = "https://AlonAndYoni.cs.bgu.ac.il";
+const API_URL = this.$root.store.server_domain;
 
 export async function register(userDetails) {
   try {
-    const response = await axios.post(`${API_URL}/auth/Register`, userDetails);
+    const response = await axios.post(
+      `https://alonandyoni.cs.bgu.ac.il/auth/Register`,
+      userDetails
+    );
+    console.log("Response:", response.data);
     return response.data;
   } catch (error) {
-    throw error.response;
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      throw error.response.data;
+    } else {
+      console.error("Error:", error.message);
+      throw error;
+    }
   }
 }
 

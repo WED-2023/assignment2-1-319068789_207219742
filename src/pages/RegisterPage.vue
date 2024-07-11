@@ -286,16 +286,20 @@ export default {
           this.usernameExistsError = true; // Set the error flag
         } else {
           const response = await register(userDetails);
-          if (response.status != 201) {
+          if (response.status !== 201) {
             throw new Error("Failed to register");
           }
 
-          alert("registered successfully!");
+          alert("Registered successfully!");
           this.$router.push("/login");
         }
       } catch (err) {
-        console.log(err.response);
-        this.form.submitError = err.response.data.message;
+        console.error(err); // Log the error for debugging
+        if (err.response && err.response.data && err.response.data.message) {
+          this.form.submitError = err.response.data.message;
+        } else {
+          this.form.submitError = "Unknown error occurred";
+        }
       }
     },
     onRegister() {
