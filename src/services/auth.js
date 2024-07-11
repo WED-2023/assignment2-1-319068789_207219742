@@ -4,7 +4,7 @@ import axios from "axios";
 import store from "../store";
 
 console.log(store.state); // To see if the state is properly imported and has the server_domain
-const API_URL = "http://localhost:3000";
+const API_URL = "https://AlonAndYoni.cs.bgu.ac.il";
 
 export async function register(userDetails) {
   try {
