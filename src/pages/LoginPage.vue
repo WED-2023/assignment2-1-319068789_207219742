@@ -65,7 +65,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import {mockLogin} from "../services/auth.js"
+import {login} from "../services/auth.js"
 export default {
   name: "Login",
   data() {
@@ -106,7 +106,12 @@ export default {
         // );
 
         const success = true; // modify this to test the error handling
-        const response = mockLogin(this.form.username, this.form.password, success);
+
+        const userDetails = {
+          username: this.form.username,
+          password: this.form.password,
+        };
+        const response = await login(userDetails);
 
         // console.log(response);
         // this.$root.loggedIn = true;
@@ -114,8 +119,14 @@ export default {
         this.$root.store.login(this.form.username);
         this.$router.push("/");
       } catch (err) {
-        console.log(err.response);
-        this.form.submitError = err.response.data.message;
+          let errorMessage = "An error occurred. Please try again.";
+          if (err.response && err.response.data && err.response.data.message) {
+            errorMessage = err.response.data.message;
+          }
+          else if (err.message) {
+            errorMessage = err.message;
+          }
+          alert(errorMessage);
       }
     },
 

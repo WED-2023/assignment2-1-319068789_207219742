@@ -281,27 +281,20 @@ export default {
           password: this.form.password,
           email: this.form.email,
         };
-
-        if (mockCheckIfUserNameExist(this.form.username)) {
-          this.usernameExistsError = true; // Set the error flag
-        } else {
-          const response = await register(userDetails);
-          if (response.status !== 201) {
-            throw new Error("Failed to register");
-          }
-
-          alert("Registered successfully!");
-          this.$router.push("/login");
-        }
-      } catch (err) {
-        console.error(err); // Log the error for debugging
-        if (err.response && err.response.data && err.response.data.message) {
-          this.form.submitError = err.response.data.message;
-        } else {
-          this.form.submitError = "Unknown error occurred";
-        }
-      }
-    },
+        const response = await register(userDetails);
+    alert("Registered successfully!");
+    this.$router.push("/login");
+  } catch (err) {
+    let errorMessage = "An error occurred. Please try again.";
+    if (err.response && err.response.data && err.response.data.message) {
+      errorMessage = err.response.data.message;
+    }
+     else if (err.message) {
+      errorMessage = err.message;
+    }
+    alert(errorMessage);
+  }
+},
     onRegister() {
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {

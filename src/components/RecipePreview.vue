@@ -52,11 +52,12 @@
 
 <script>
 import {
-  mockAddToFavorites,
-  mockRemoveFromFavorites,
-  mockCheckIfFavorite,
+
   mockAddToWatched,
   mockCheckIfWatched,
+  addToFavorites,
+  removeFromFavorites,
+  checkIfFavorite,
 } from "../services/recipes.js";
 
 export default {
@@ -87,7 +88,7 @@ export default {
   methods: {
     async checkIfFavorite() {
       try {
-        const response = await mockCheckIfFavorite(this.recipe.id);
+        const response = await checkIfFavorite(localStorage.username,this.recipe.id);
         console.log("Favorite check response:", response.data);
         this.isFavorited = response.data.isFavorite;
       } catch (error) {
@@ -111,13 +112,23 @@ export default {
         console.log("Image load error:", error);
       }
     },
-    toggleFavorite() {
-      this.isFavorited = !this.isFavorited;
-      if (this.isFavorited) {
-        mockAddToFavorites(this.recipe.id);
+    async toggleFavorite() {
+      if (localStorage.username) {
+        this.isFavorited = !this.isFavorited;
+        const userDetails = {
+          username: localStorage.username,
+          recipe_id: this.recipe.id,
+        };
+        if (this.isFavorited) {
+          await addToFavorites(userDetails);
+        } else {
+          await removeFromFavorites(userDetails);
+        }
       } else {
-        mockRemoveFromFavorites(this.recipe.id);
+        console.error('localStorage.username is not defined.');
       }
+
+      
     },
     handleWatched() {
       if (!this.isWatched) {

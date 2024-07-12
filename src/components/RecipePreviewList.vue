@@ -30,6 +30,7 @@ import {
   mockGetFamilyRecipesPreview,
   mockGetFavorites,
   mockGetMyRecipes,
+  getFamilyRecipes,
 } from "../services/recipes.js";
 
 export default {
@@ -77,7 +78,7 @@ export default {
         const fetchFunctions = {
           randomRecipes: () => mockGetRecipesPreview(amountToFetch),
           lastRecipes: () => mockGetLastRecipes(amountToFetch),
-          familyRecipes: () => mockGetFamilyRecipesPreview(),
+          familyRecipes: () => getFamilyRecipes(),
           myRecipes: () => mockGetMyRecipes(),
           favorites: () => mockGetFavorites(),
         };

@@ -1,4 +1,65 @@
 // src/services/recipes.js
+
+import axios from "axios";
+
+const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
+
+
+// Get family recipes
+export async function getFamilyRecipes() {
+  const response = await axios.get(`${API_URL}/familyRecipes`);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// add to favorites
+export async function addToFavorites(userDetails) {
+  const response = await axios.post(`${API_URL}/favorites`, userDetails);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// remove from favorites
+export async function removeFromFavorites(userDetails) {
+  try {
+    const response = await axios.delete(`${API_URL}/favorites`, {
+      params: {
+        username: userDetails.username,
+        recipe_id: userDetails.recipe_id
+      }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error removing from favorites:", error);
+    throw error;
+  }
+}
+
+// check if favorite
+export async function isFavorite(userDetails) {
+  try {
+    const response = await axios.get(`${API_URL}/favorites`, {
+      params: {
+        username: userDetails.username,
+        recipe_id: userDetails.recipe_id
+      }
+    });
+    console.log("Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error checking if favorite:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+
+// *********************************************************** mock section **************************************************************************
+
 import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
 let favoriteDictionary = {};

@@ -51,6 +51,7 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import UploadRecipe from "@/components/UploadRecipe.vue";
+import {logout} from "@/services/auth.js";
 
 export default {
   name: "App",
@@ -64,13 +65,27 @@ export default {
     };
   },
   methods: {
-    Logout() {
-      this.$root.store.logout();
-      this.$root.toast("Logout", "User logged out successfully", "success");
+    async Logout() {
+      try{
+        const response = await logout();
+        this.$root.store.logout();
+        this.$root.toast("Logout", "User logged out successfully", "success");
 
-      this.$router.push("/").catch(() => {
-        this.$forceUpdate();
-      });
+        this.$router.push("/").catch(() => {
+          this.$forceUpdate();
+        });
+      }
+      catch(err){
+        let errorMessage = "An error occurred. Please try again.";
+          if (err.response && err.response.data && err.response.data.message) {
+            errorMessage = err.response.data.message;
+          }
+          else if (err.message) {
+            errorMessage = err.message;
+          }
+          alert(errorMessage);
+      }
+      
     },
   },
 };

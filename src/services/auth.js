@@ -2,26 +2,42 @@
 
 import axios from "axios";
 
-const API_URL = this.$root.store.server_domain;
+const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
 
+// Register a new user
 export async function register(userDetails) {
+  const response = await axios.post(`${API_URL}/auth/Register`, userDetails);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// Login a user
+export async function login(userDetails) {
+  const response = await axios.post(`${API_URL}/auth/Login`, userDetails);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// Logout the current user
+export async function logout() {
+  const response = await axios.post(`${API_URL}/auth/Logout`);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// Get family recipes
+export async function getFamilyRecipes() {
   try {
-    const response = await axios.post(
-      `https://alonandyoni.cs.bgu.ac.il/auth/Register`,
-      userDetails
-    );
+    const response = await axios.get(`${API_URL}/recipes/family`);
     console.log("Response:", response.data);
     return response.data;
   } catch (error) {
-    if (error.response) {
-      console.error("Error response:", error.response.data);
-      throw error.response.data;
-    } else {
-      console.error("Error:", error.message);
-      throw error;
-    }
+    console.error("Error fetching family recipes:", error);
+    throw error;
   }
 }
+
+//************************************************************ mock section *********************************************************************
 
 export function mockLogin(credentials, success = true) {
   // Check if already logged in
