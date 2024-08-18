@@ -80,11 +80,11 @@
 
 <script>
 import {
-  mockGetRecipeFullDetails,
+  getFullRecipe,
   mockGetInstructions,
-  mockAddToFavorites,
-  mockRemoveFromFavorites,
-  mockCheckIfFavorite,
+  addToFavorites,
+  removeFromFavorites,
+  checkIfFavorite,
   mockLikeRecipe,
   mockCheckIfLiked,
 } from "../services/recipes.js";
@@ -108,7 +108,7 @@ export default {
   mounted() {
     this.created();
     this.updateRecipes();
-    this.checkIfFavorite();
+    this.checkIfFavoriteRecipe();
     this.checkIfLiked();
   },
 
@@ -117,7 +117,7 @@ export default {
       try {
         let response;
 
-        response = mockGetRecipeFullDetails(this.$route.params.recipeId);
+        response = getFullRecipe(this.$route.params.recipeId);
 
         if (response === null) this.$router.replace("/NotFound");
 
@@ -169,9 +169,9 @@ export default {
         console.log(error);
       }
     },
-    async checkIfFavorite() {
+    async checkIfFavoriteRecipe() {
       try {
-        const response = await mockCheckIfFavorite(this.$route.params.recipeId);
+        const response = await checkIfFavorite(localStorage.username ,this.$route.params.recipeId);
         console.log("Favorite check response:", response.data);
         this.isFavorited = response.data.isFavorite;
       } catch (error) {
@@ -187,13 +187,24 @@ export default {
         console.log(error);
       }
     },
-    toggleFavorite() {
-      this.isFavorited = !this.isFavorited;
-      if (this.isFavorited) {
-        mockAddToFavorites(this.$route.params.recipeId);
+    async toggleFavorite() {
+      if (localStorage.username) {
+        this.isFavorited = !this.isFavorited;
+        const userDetails = {
+          username: localStorage.username,
+          recipe_id: this.$route.params.recipeId,
+        };
+        console.log(`Toggling favorite status: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+        if (this.isFavorited) {
+          await addToFavorites(userDetails);
+        } else {
+          await removeFromFavorites(userDetails);
+        }
       } else {
-        mockRemoveFromFavorites(this.$route.params.recipeId);
+        console.error('localStorage.username is not defined.');
       }
+
+      
     },
     toggleLike() {
       this.isLiked = !this.isLiked;

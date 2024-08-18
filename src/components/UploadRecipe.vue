@@ -1,7 +1,7 @@
 <template>
   <div class="upload-recipe-container">
     <h1 class="title">Upload Your Recipe</h1>
-    <form @submit.prevent="uploadRecipe">
+    <form @submit.prevent="handleSubmit">
       <div class="form-content">
         <!-- Left Section -->
         <div class="left-section">
@@ -22,6 +22,11 @@
           </div>
 
           <div class="form-group">
+            <label for="summary">Short summary:</label>
+            <input type="text" v-model="summary" id="summary" required />
+          </div>
+
+          <div class="form-group">
             <label for="time">Time to Make (minutes):</label>
             <input
               type="number"
@@ -31,6 +36,7 @@
               min="1"
             />
           </div>
+          
 
           <div class="form-group">
             <label for="servings">Number of Servings:</label>
@@ -178,14 +184,15 @@
 </template>
 
 <script>
-import { mockUploadRecipe } from "../services/recipes.js";
+import { uploadRecipe, uploadImage } from "../services/recipes.js";
 
 export default {
   name: "UploadRecipe",
   data() {
     return {
       title: "",
-      image: null,
+      image: null, // Store the image data URL here
+      summary: "",
       time: "",
       servings: "",
       ingredients: [{ text: "" }],
@@ -223,8 +230,26 @@ export default {
     };
   },
   methods: {
-    handleImageUpload(event) {
-      this.image = event.target.files[0];
+    async handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      try {
+        // Upload image to server
+        const imageData = new FormData();
+        imageData.append("image", file);
+        const response = await uploadImage(imageData);
+
+        // Assuming server responds with image path or filename
+        if (response.status === 200) {
+          this.image = response.data.imagePath; // Store path or filename
+        } else {
+          throw new Error("Failed to upload image");
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("There was an error uploading your image. Please try again.");
+      }
     },
     addInstruction() {
       this.instructions.push({ text: "" });
@@ -238,25 +263,29 @@ export default {
     removeIngredient(index) {
       this.ingredients.splice(index, 1);
     },
-    async uploadRecipe() {
+    async handleSubmit() {
       if (!this.validateInputs()) {
         alert("Time to make and Number of Servings must be greater than 1.");
         return;
       }
 
       try {
-        const response = await mockUploadRecipe(
-          this.title,
-          this.image,
-          this.time,
-          this.servings,
-          this.ingredients,
-          this.instructions,
-          this.selectedCuisines,
-          this.selectedDiets,
-          this.selectedIntolerances
-        );
-        if (response.status != 200) {
+        const recipeDetails = {
+          title: this.title,
+          image: this.image, // Use the image data URL here
+          summary: this.summary,
+          readyInMinutes: this.time,
+          servings: this.servings,
+          ingredients: this.ingredients,
+          instructions: this.instructions,
+          cuisines: this.selectedCuisines,
+          diets: this.selectedDiets,
+          intolerances: this.selectedIntolerances,
+          username: localStorage.username,
+        };
+
+        const response = await uploadRecipe(recipeDetails);
+        if (response.status != 201) {
           throw new Error("Failed to upload recipe");
         }
 
@@ -279,15 +308,21 @@ export default {
     resetForm() {
       this.title = "";
       this.image = null;
+      this.summary = "";
       this.time = "";
       this.servings = "";
       this.ingredients = [{ text: "" }];
       this.instructions = [{ text: "" }];
-      this.$refs.image.value = null; // Reset file input
+      // Clear file input
+      const fileInput = this.$refs.image;
+      if (fileInput) {
+        fileInput.value = null;
+      }
     },
   },
 };
 </script>
+
 
 <style scoped>
 .title {

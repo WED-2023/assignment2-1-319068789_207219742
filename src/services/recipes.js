@@ -21,12 +21,10 @@ export async function addToFavorites(userDetails) {
 
 // remove from favorites
 export async function removeFromFavorites(userDetails) {
+  console.log(`Removing from favorites: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
   try {
     const response = await axios.delete(`${API_URL}/favorites`, {
-      params: {
-        username: userDetails.username,
-        recipe_id: userDetails.recipe_id
-      }
+      data: userDetails // Changed to pass userDetails in the request body
     });
     console.log("Response:", response.data);
     return response;
@@ -37,25 +35,78 @@ export async function removeFromFavorites(userDetails) {
 }
 
 // check if favorite
-export async function isFavorite(userDetails) {
+export async function checkIfFavorite(username, recipe_id) {
   try {
-    const response = await axios.get(`${API_URL}/favorites`, {
+    const response = await axios.get(`${API_URL}/isFavorite`, {
       params: {
-        username: userDetails.username,
-        recipe_id: userDetails.recipe_id
+        username: username,
+        recipe_id: recipe_id,
       }
     });
     console.log("Response:", response.data);
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Error checking if favorite:", error);
     throw error;
   }
 }
 
+export async function uploadImage(imageData) {
+  const response = await axios.post(`${API_URL}/uploadImage`, imageData);
+  return response; // Assuming server responds with image path or filename
+}
 
+// Upload a new recipe
+export async function uploadRecipe(recipeDetails) {
+  const response = await axios.post(`${API_URL}/uploadRecipe`, recipeDetails, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  console.log('Recipe uploaded successfully:', response.data);
+  return response;
+}
 
+// Get full recipe details by recipe ID
+export async function getFullRecipe(recipeId) {
+  const response = await axios.get(`${API_URL}/getFullRecipe`, {
+    params: {
+      recipe_id: recipeId,
+    },
+  });
 
+  console.log('Recipe details:', response.data);
+  return response;
+}
+
+// Get my recipes
+export async function getMyRecipes(username) {
+  try {
+    const response = await axios.get(`${API_URL}/myRecipes`, {
+      params: { username }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching my recipes:", error);
+    throw error;
+  }
+}
+
+// Get favorite recipes
+export async function getFavoriteRecipes(username) {
+  try {
+    const response = await axios.get(`${API_URL}/favorites`, {
+      params: { username }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching favorite recipes:", error);
+    throw error;
+  }
+}
 
 
 // *********************************************************** mock section **************************************************************************

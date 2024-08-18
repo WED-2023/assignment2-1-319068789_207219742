@@ -81,12 +81,12 @@ export default {
     },
   },
   async mounted() {
-    this.checkIfFavorite();
+    this.checkIfFavoriteRecipe();
     this.checkIfWatched();
     await this.loadImage();
   },
   methods: {
-    async checkIfFavorite() {
+    async checkIfFavoriteRecipe() {
       try {
         const response = await checkIfFavorite(localStorage.username,this.recipe.id);
         console.log("Favorite check response:", response.data);
@@ -119,6 +119,7 @@ export default {
           username: localStorage.username,
           recipe_id: this.recipe.id,
         };
+        console.log(`Toggling favorite status: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
         if (this.isFavorited) {
           await addToFavorites(userDetails);
         } else {

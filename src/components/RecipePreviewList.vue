@@ -27,7 +27,8 @@ import RecipePreview from "./RecipePreview.vue";
 import {
   mockGetRecipesPreview,
   mockGetLastRecipes,
-  mockGetFamilyRecipesPreview,
+  getFavoriteRecipes,
+  getMyRecipes,
   mockGetFavorites,
   mockGetMyRecipes,
   getFamilyRecipes,
@@ -79,8 +80,8 @@ export default {
           randomRecipes: () => mockGetRecipesPreview(amountToFetch),
           lastRecipes: () => mockGetLastRecipes(amountToFetch),
           familyRecipes: () => getFamilyRecipes(),
-          myRecipes: () => mockGetMyRecipes(),
-          favorites: () => mockGetFavorites(),
+          myRecipes: () => getMyRecipes(localStorage.username),
+          favorites: () => getFavoriteRecipes(localStorage.username),
         };
 
         const fetchFunction = fetchFunctions[this.listType];
