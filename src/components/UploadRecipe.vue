@@ -61,17 +61,31 @@
             >
               <input
                 type="text"
-                v-model="ingredient.text"
-                placeholder="Ingredient"
+                v-model="ingredient.amount"
+                placeholder="Amount"
+                class="ingredient-field amount"
               />
-              <button
+              <input
+                type="text"
+                v-model="ingredient.unit"
+                placeholder="Unit"
+                class="ingredient-field unit"
+              />
+              <input
+                type="text"
+                v-model="ingredient.name"
+                placeholder="Ingredient Name"
+                class="ingredient-field name"
+              />
+              
+            </div>
+            <button
                 type="button"
                 @click="removeIngredient(index)"
                 class="addRemove-button"
               >
                 -
               </button>
-            </div>
             <button
               type="button"
               @click="addIngredient"
@@ -80,6 +94,9 @@
               +
             </button>
           </div>
+
+
+
 
           <div class="form-group">
             <label>Instructions:</label>
@@ -252,50 +269,63 @@ export default {
       }
     },
     addInstruction() {
-      this.instructions.push({ text: "" });
-    },
-    removeInstruction(index) {
-      this.instructions.splice(index, 1);
-    },
+  this.instructions.push({ text: "" });
+},
+
+removeInstruction(index) {
+  this.instructions.splice(index, 1);
+},
+
     addIngredient() {
-      this.ingredients.push({ text: "" });
-    },
-    removeIngredient(index) {
-      this.ingredients.splice(index, 1);
-    },
+  this.ingredients.push({ amount: "", unit: "", name: "" });
+},
+
+removeIngredient(index) {
+  this.ingredients.splice(index, 1);
+},
+
     async handleSubmit() {
       if (!this.validateInputs()) {
-        alert("Time to make and Number of Servings must be greater than 1.");
-        return;
-      }
+    alert("Time to make and Number of Servings must be greater than 1.");
+    return;
+  }
 
-      try {
-        const recipeDetails = {
-          title: this.title,
-          image: this.image, // Use the image data URL here
-          summary: this.summary,
-          readyInMinutes: this.time,
-          servings: this.servings,
-          ingredients: this.ingredients,
-          instructions: this.instructions,
-          cuisines: this.selectedCuisines,
-          diets: this.selectedDiets,
-          intolerances: this.selectedIntolerances,
-          username: localStorage.username,
-        };
+  try {
+    // Prepare the data for the recipe
+    const recipeDetails = {
+      title: this.title,
+      image: this.image, // Use the image data URL here
+      summary: this.summary,
+      readyInMinutes: this.time,
+      servings: this.servings,
+      cuisines: this.selectedCuisines,
+      diets: this.selectedDiets,
+      intolerances: this.selectedIntolerances,
+      username: localStorage.username,
+      ingredients: this.ingredients.map(ingredient => ({
+        amount: ingredient.amount,
+        unit: ingredient.unit,
+        name: ingredient.name,
+      })),
+      instructions: this.instructions.map((instruction, index) => ({
+        stepNumber: index + 1,
+        description: instruction.text,
+      })),
+    };
 
-        const response = await uploadRecipe(recipeDetails);
-        if (response.status != 201) {
-          throw new Error("Failed to upload recipe");
-        }
+    // Send the data to the server
+    const response = await uploadRecipe(recipeDetails);
+    if (response.status != 201) {
+      throw new Error("Failed to upload recipe");
+    }
 
-        alert("Recipe uploaded successfully!");
-        this.resetForm();
-        this.$emit("upload-success");
-      } catch (error) {
-        console.error("Error uploading recipe:", error);
-        alert("There was an error uploading your recipe. Please try again.");
-      }
+    alert("Recipe uploaded successfully!");
+    this.resetForm();
+    this.$emit("upload-success");
+  } catch (error) {
+    console.error("Error uploading recipe:", error);
+    alert("There was an error uploading your recipe. Please try again.");
+  }
     },
     validateInputs() {
       return (
@@ -358,21 +388,27 @@ export default {
   width: 33%;
 }
 
-.ingredient-item input[type="text"] {
-  width: calc(115% - 50px);
-  padding: 10px;
+.ingredient-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ingredient-field {
+  padding: 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.instruction-item textarea {
-  width: calc(115% - 50px);
-  height: 60px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.ingredient-field.amount,
+.ingredient-field.unit {
+  width: 80px; /* Adjust width for amount and unit */
+}
+
+.ingredient-field.name {
+  flex: 1; /* Take up remaining space */
+  margin-left: 10px; /* Space between fields */
 }
 
 .addRemove-button {
@@ -383,12 +419,27 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 0px;
-  margin-bottom: 9px;
+  margin-left: 10px; /* Space between button and fields */
 }
 
 .addRemove-button:hover {
   background-color: #c82333;
+}
+
+.ingredient-item input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.instruction-item textarea {
+  width: calc(100% - 22px); /* Adjust width */
+  height: 60px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .label {
@@ -458,4 +509,5 @@ button[type="button"]:hover {
 .filter-option input[type="checkbox"] {
   margin-right: 10px;
 }
+
 </style>
