@@ -5,6 +5,13 @@ import axios from "axios";
 const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
 
 
+// Get random recipes
+export async function getRandomRecipes() {
+  const response = await axios.get(`${API_URL}/randomRecipes`);
+  console.log("Response:", response.data);
+  return response;
+}
+
 // Get family recipes
 export async function getFamilyRecipes() {
   const response = await axios.get(`${API_URL}/familyRecipes`);
@@ -30,6 +37,46 @@ export async function removeFromFavorites(userDetails) {
     return response;
   } catch (error) {
     console.error("Error removing from favorites:", error);
+    throw error;
+  }
+}
+
+// check if liked
+export async function checkIfLiked(username, recipe_id) {
+  try {
+    const response = await axios.get(`${API_URL}/isLiked`, {
+      params: {
+        username: username,
+        recipe_id: recipe_id,
+      }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error checking if favorite:", error);
+    throw error;
+  }
+}
+
+// add to liked
+export async function addToLiked(userDetails) {
+  console.log(`add to liked: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+  const response = await axios.post(`${API_URL}/likeRecipe`, userDetails);
+  console.log("Response:", response.data);
+  return response;
+}
+
+// remove from liked
+export async function removeFromLiked(userDetails) {
+  console.log(`Removing from liked: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+  try {
+    const response = await axios.delete(`${API_URL}/likeRecipe`, {
+      data: userDetails // Changed to pass userDetails in the request body
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error removing from liked:", error);
     throw error;
   }
 }
@@ -67,6 +114,21 @@ export async function uploadRecipe(recipeDetails) {
   console.log('Recipe uploaded successfully:', response.data);
   return response;
 }
+
+export async function searchRecipes(recipeDetails) {
+  console.log(`recipeDetails: ${JSON.stringify(recipeDetails)}`);
+  
+  const response = await axios.get(`${API_URL}/searchRecipe`, {
+    params: recipeDetails,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  console.log('Recipe searched successfully:', response.data);
+  return response;
+}
+
 
 // Get full recipe details by recipe ID
 export async function getFullRecipe(recipeId) {
@@ -106,6 +168,45 @@ export async function getFavoriteRecipes(username) {
     console.error("Error fetching favorite recipes:", error);
     throw error;
   }
+}
+
+// Get last 3 watced recipes
+export async function getLastRecipes(username) {
+  try {
+    const response = await axios.get(`${API_URL}/watched`, {
+      params: { username }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching watched recipes:", error);
+    throw error;
+  }
+}
+
+// check if recipe is watched
+export async function checkIfWatched(username, recipe_id) {
+  try {
+    const response = await axios.get(`${API_URL}/isWatched`, {
+      params: {
+        username: username,
+        recipe_id: recipe_id,
+      }
+    });
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error checking if watched:", error);
+    throw error;
+  }
+}
+
+// add to watched
+export async function addToWatched(userDetails) {
+  console.log(`add to watched: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+  const response = await axios.post(`${API_URL}/watched`, userDetails);
+  console.log("Response:", response.data);
+  return response;
 }
 
 
@@ -229,12 +330,12 @@ export function mockCheckIfFavorite(recipeId) {
 // Mock functions to simulate API calls
 export function mockSearchRecipes(
   query,
-  amount,
+  number,
   selectedCuisines,
   selectedDiets,
   selectedIntolerances
 ) {
-  return mockGetRecipesPreview(amount);
+  return mockGetRecipesPreview(number);
 }
 
 export function mockGetLastRecipes(amount) {
@@ -247,7 +348,7 @@ export function mockGetMyRecipes() {
 
 export function mockLikeRecipe(recipeId) {}
 
-export function mockCheckIfLiked(recipeId) {}
+export function mockCheckIfLiked(recipeId) {return { data: { isLiked: true } };}
 
 export function mockUploadRecipe(
   title,

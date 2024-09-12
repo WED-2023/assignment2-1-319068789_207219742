@@ -25,13 +25,11 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import {
-  mockGetRecipesPreview,
-  mockGetLastRecipes,
+  getLastRecipes,
   getFavoriteRecipes,
   getMyRecipes,
-  mockGetFavorites,
-  mockGetMyRecipes,
   getFamilyRecipes,
+  getRandomRecipes,
 } from "../services/recipes.js";
 
 export default {
@@ -75,10 +73,9 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        const amountToFetch = 3; // Set this to how many recipes you want to fetch
         const fetchFunctions = {
-          randomRecipes: () => mockGetRecipesPreview(amountToFetch),
-          lastRecipes: () => mockGetLastRecipes(amountToFetch),
+          randomRecipes: () => getRandomRecipes(),
+          lastRecipes: () => getLastRecipes(localStorage.username),
           familyRecipes: () => getFamilyRecipes(),
           myRecipes: () => getMyRecipes(localStorage.username),
           favorites: () => getFavoriteRecipes(localStorage.username),

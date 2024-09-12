@@ -72,23 +72,24 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
 
-const shared_data = {
-  server_domain: "https//AlonAndYoni.cs.bgu.ac.il",
-  //server_domain: "http://localhost:3000",
+// Add this line to export shared_data
+export const shared_data = {
+  server_domain: "https://AlonAndYoni.cs.bgu.ac.il", // corrected the URL scheme
+  // server_domain: "http://localhost:3000",
   username: localStorage.username,
   login(username) {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
-    mockSetRegistered();
   },
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
     this.username = undefined;
-    mockClearSearchHistory();
+    localStorage.removeItem("lastSearchQuery");
   },
 };
+
 console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 

@@ -112,10 +112,11 @@
 <script>
 import RecipePreview from "../components/RecipePreview";
 import {
-  mockSearchRecipes,
-  mockGetSearchHistory,
-  mockAddToSearchHistory,
+  searchRecipes,
 } from "../services/recipes.js";
+import { shared_data } from "../main.js"; 
+
+
 
 export default {
   name: "RecipePreviewList",
@@ -128,8 +129,8 @@ export default {
       recipes: [],
       lastSearches: [],
       showDropdown: false,
-      amount: 5, // Default amount of results
-      sortCriteria: "relevance", // Default sorting criteria
+      amount: 5,
+      sortCriteria: "relevance",
       selectedCuisines: [],
       selectedDiets: [],
       selectedIntolerances: [],
@@ -169,15 +170,17 @@ export default {
     async searchRecipes() {
       if (this.query.trim() === "") return;
       try {
-        const response = await mockSearchRecipes(
-          this.query,
-          this.amount,
-          this.selectedCuisines,
-          this.selectedDiets,
-          this.selectedIntolerances
-        );
+          const recipeDetails = {
+            query: this.query,
+            number: this.amount,
+            cuisine: this.selectedCuisines,
+            diet: this.selectedDiets,
+            intolerances: this.selectedIntolerances,
+            
+          };
+        const response = await searchRecipes(recipeDetails);
 
-        let recipes = response.data.recipes;
+        let recipes = response.data;
 
         if (recipes.length === 0) {
           alert("No matching result");
@@ -194,7 +197,7 @@ export default {
     },
     sortRecipes(recipes, criteria, ascending = true) {
       if (criteria === "relevance") {
-        return recipes; // Return the recipes as they are
+        return recipes;
       }
       return recipes.sort((a, b) => {
         if (ascending) {
@@ -205,10 +208,14 @@ export default {
       });
     },
     saveSearch(query) {
-      mockAddToSearchHistory(query);
+      if (shared_data.username) {  // Check if the user is logged in
+        localStorage.setItem("lastSearchQuery", query);  // Save to localStorage
+      }
     },
     loadLastSearches() {
-      this.lastSearches = mockGetSearchHistory();
+      if (shared_data.username) { // Checks if the user is logged in
+        this.query = localStorage.getItem("lastSearchQuery") || ""; // Load the last search query if it exists
+      }
     },
     selectSearch(query) {
       this.query = query;
@@ -218,12 +225,12 @@ export default {
   },
   watch: {
     sortCriteria(newCriteria) {
-      let ascending = true; // Default to ascending order
+      let ascending = true;
       if (newCriteria === "aggregateLikes") {
-        ascending = false; // Likes should be sorted in descending order
+        ascending = false;
       }
       if (newCriteria === "relevance") {
-        this.searchRecipes(); // Fetch and set the recipes in their default order
+        this.searchRecipes();
       } else {
         this.recipes = this.sortRecipes(this.recipes, newCriteria, ascending);
       }

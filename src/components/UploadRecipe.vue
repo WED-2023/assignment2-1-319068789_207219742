@@ -284,8 +284,8 @@ removeIngredient(index) {
   this.ingredients.splice(index, 1);
 },
 
-    async handleSubmit() {
-      if (!this.validateInputs()) {
+async handleSubmit() {
+  if (!this.validateInputs()) {
     alert("Time to make and Number of Servings must be greater than 1.");
     return;
   }

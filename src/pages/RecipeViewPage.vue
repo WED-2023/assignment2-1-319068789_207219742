@@ -52,7 +52,8 @@
         <div class="wrapper">
           <div class="wrapped">
             <h4>Summary:</h4>
-            <p>{{ recipe.summary }}</p>
+            <!-- Use v-html to render the summary as HTML -->
+            <p v-html="recipe.summary"></p>
 
             <h4>Ingredients:</h4>
             <ul>
@@ -65,11 +66,8 @@
             </ul>
 
             <h4>Instructions:</h4>
-            <ol>
-              <li v-for="ins in recipe.instructions" :key="ins">
-                {{ ins }}
-              </li>
-            </ol>
+            <!-- Use v-html to render the instructions as HTML -->
+            <p v-html="recipe.instructions"></p>
           </div>
           <div class="wrapped"></div>
         </div>
@@ -78,21 +76,21 @@
   </div>
 </template>
 
+
 <script>
 import {
   getFullRecipe,
-  mockGetInstructions,
   addToFavorites,
   removeFromFavorites,
   checkIfFavorite,
-  mockLikeRecipe,
-  mockCheckIfLiked,
+  addToLiked,
+  checkIfLiked,
+  removeFromLiked,
 } from "../services/recipes.js";
 
 export default {
   data() {
     return {
-      instructions: [],
       recipe: null,
       vegan_img:
         "https://github.com/WED-2023/assignment2-1-319068789_207219742/blob/main/src/assets/vegen%20friendly.png?raw=true",
@@ -107,7 +105,6 @@ export default {
 
   mounted() {
     this.created();
-    this.updateRecipes();
     this.checkIfFavoriteRecipe();
     this.checkIfLiked();
   },
@@ -117,15 +114,14 @@ export default {
       try {
         let response;
 
-        response = getFullRecipe(this.$route.params.recipeId);
+        response = await getFullRecipe(this.$route.params.recipeId);
 
         if (response === null) this.$router.replace("/NotFound");
 
         let {
-          analyzedInstructions,
           instructions,
-          extendedIngredients,
           aggregateLikes,
+          extendedIngredients,
           readyInMinutes,
           image,
           title,
@@ -134,11 +130,10 @@ export default {
           glutenFree,
           servings,
           summary,
-        } = response.data.recipe;
+        } = response.data;
 
         let _recipe = {
           instructions,
-          analyzedInstructions,
           extendedIngredients,
           aggregateLikes,
           readyInMinutes,
@@ -156,19 +151,6 @@ export default {
         console.log(error);
       }
     },
-    async updateRecipes() {
-      try {
-        const response = mockGetInstructions(this.$route.params.recipeId);
-
-        console.log(response);
-        const analyzedInstructions = response.data.instructions;
-        console.log(analyzedInstructions);
-        this.instructions = [];
-        this.instructions.push(...analyzedInstructions);
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async checkIfFavoriteRecipe() {
       try {
         const response = await checkIfFavorite(localStorage.username ,this.$route.params.recipeId);
@@ -180,7 +162,7 @@ export default {
     },
     async checkIfLiked() {
       try {
-        const response = await mockCheckIfLiked(this.$route.params.recipeId);
+        const response = await checkIfLiked(localStorage.username ,this.$route.params.recipeId);
         console.log("Like check response:", response.data);
         this.isLiked = response.data.isLiked;
       } catch (error) {
@@ -206,12 +188,22 @@ export default {
 
       
     },
-    toggleLike() {
-      this.isLiked = !this.isLiked;
-      if (this.isLiked) {
-        mockLikeRecipe(this.$route.params.recipeId);
+    async toggleLike() {
+
+      if (localStorage.username) {
+        this.isLiked = !this.isLiked;
+        const userDetails = {
+          username: localStorage.username,
+          recipe_id: this.$route.params.recipeId,
+        };
+        console.log(`Toggling like status: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+        if (this.isLiked) {
+          await addToLiked(userDetails);
+        } else {
+          await removeFromLiked(userDetails);
+        }
       } else {
-        mockRemoveFromFavorites(this.$route.params.recipeId);
+        console.error('localStorage.username is not defined.');
       }
     },
   },

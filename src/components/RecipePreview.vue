@@ -3,7 +3,7 @@
     <router-link
       :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
       class="recipe-preview"
-      @click.native="handleWatched"
+      @click="onRecipeClick"
     >
       <div class="recipe-body">
         <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
@@ -50,11 +50,12 @@
   </div>
 </template>
 
+
 <script>
 import {
 
-  mockAddToWatched,
-  mockCheckIfWatched,
+  addToWatched,
+  checkIfWatched,
   addToFavorites,
   removeFromFavorites,
   checkIfFavorite,
@@ -81,14 +82,18 @@ export default {
     },
   },
   async mounted() {
-    this.checkIfFavoriteRecipe();
-    this.checkIfWatched();
+    await this.checkIfFavoriteRecipe();
+    await this.checkIfWatched();
     await this.loadImage();
   },
   methods: {
+    async onRecipeClick(event) {
+      event.stopPropagation(); // Stop the click event from propagating
+      await this.handleWatched();
+    },
     async checkIfFavoriteRecipe() {
       try {
-        const response = await checkIfFavorite(localStorage.username,this.recipe.id);
+        const response = await checkIfFavorite(localStorage.username, this.recipe.id);
         console.log("Favorite check response:", response.data);
         this.isFavorited = response.data.isFavorite;
       } catch (error) {
@@ -97,7 +102,7 @@ export default {
     },
     async checkIfWatched() {
       try {
-        const response = await mockCheckIfWatched(this.recipe.id);
+        const response = await checkIfWatched(localStorage.username, this.recipe.id);
         console.log("Watched check response:", response.data);
         this.isWatched = response.data.isWatched;
       } catch (error) {
@@ -119,22 +124,23 @@ export default {
           username: localStorage.username,
           recipe_id: this.recipe.id,
         };
-        console.log(`Toggling favorite status: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
+        console.log(
+          `Toggling favorite status: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`
+        );
         if (this.isFavorited) {
           await addToFavorites(userDetails);
         } else {
           await removeFromFavorites(userDetails);
         }
       } else {
-        console.error('localStorage.username is not defined.');
+        console.error("localStorage.username is not defined.");
       }
-
-      
     },
-    handleWatched() {
-      if (!this.isWatched) {
+    async handleWatched() {
+      console.error("handle watch");
+      if (localStorage.username) {
         this.isWatched = true;
-        mockAddToWatched(this.recipe.id);
+        await addToWatched(localStorage.username, this.recipe.id);
       }
     },
   },
