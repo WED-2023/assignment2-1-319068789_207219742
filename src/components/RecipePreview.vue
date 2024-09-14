@@ -3,7 +3,6 @@
     <router-link
       :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
       class="recipe-preview"
-      @click="onRecipeClick"
     >
       <div class="recipe-body">
         <img v-if="image_load" :src="recipe.image" class="main-recipe-image" />
@@ -53,8 +52,6 @@
 
 <script>
 import {
-
-  addToWatched,
   checkIfWatched,
   addToFavorites,
   removeFromFavorites,
@@ -87,10 +84,6 @@ export default {
     await this.loadImage();
   },
   methods: {
-    async onRecipeClick(event) {
-      event.stopPropagation(); // Stop the click event from propagating
-      await this.handleWatched();
-    },
     async checkIfFavoriteRecipe() {
       try {
         const response = await checkIfFavorite(localStorage.username, this.recipe.id);
@@ -134,13 +127,6 @@ export default {
         }
       } else {
         console.error("localStorage.username is not defined.");
-      }
-    },
-    async handleWatched() {
-      console.error("handle watch");
-      if (localStorage.username) {
-        this.isWatched = true;
-        await addToWatched(localStorage.username, this.recipe.id);
       }
     },
   },

@@ -79,6 +79,7 @@
 
 <script>
 import {
+  addToWatched,
   getFullRecipe,
   addToFavorites,
   removeFromFavorites,
@@ -107,8 +108,8 @@ export default {
     this.created();
     this.checkIfFavoriteRecipe();
     this.checkIfLiked();
+    this.handleWatched();
   },
-
   methods: {
     async created() {
       try {
@@ -204,6 +205,16 @@ export default {
         }
       } else {
         console.error('localStorage.username is not defined.');
+      }
+    },
+    async handleWatched() {
+      console.error("handle watch");
+      if (localStorage.username) {
+        const userDetails = {
+          username: localStorage.username,
+          recipe_id: this.$route.params.recipeId,
+        };
+        await addToWatched(userDetails);
       }
     },
   },
