@@ -79,15 +79,18 @@
 
 <script>
 import {
-  addToWatched,
   getFullRecipe,
+} from "../services/recipes.js";
+
+import {
+  addToWatched,
   addToFavorites,
   removeFromFavorites,
   checkIfFavorite,
   addToLiked,
   checkIfLiked,
   removeFromLiked,
-} from "../services/recipes.js";
+} from "../services/client.js";
 
 export default {
   data() {

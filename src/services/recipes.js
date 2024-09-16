@@ -1,9 +1,20 @@
 // src/services/recipes.js
+//This file deals with recipe-related functionality. It contains functions for uploading, retrieving, searching, and interacting with recipes. This includes adding recipes to favorites, checking if recipes are liked or watched, and managing family and random recipe requests.
 
 import axios from "axios";
-
 const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
 
+// Get family recipes
+export async function getFamilyRecipes() {
+  try {
+    const response = await axios.get(`${API_URL}/familyRecipes`);
+    console.log("Response:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Error fetching family recipes:", error);
+    throw error;
+  }
+}
 
 // Get random recipes
 export async function getRandomRecipes() {
@@ -12,200 +23,37 @@ export async function getRandomRecipes() {
   return response;
 }
 
-// Get family recipes
-export async function getFamilyRecipes() {
-  const response = await axios.get(`${API_URL}/familyRecipes`);
-  console.log("Response:", response.data);
+// Get full recipe details by recipe ID
+export async function getFullRecipe(recipeId) {
+  const response = await axios.get(`${API_URL}/getFullRecipe`, {
+    params: { recipe_id: recipeId },
+  });
+  console.log('Recipe details:', response.data);
   return response;
-}
-
-// add to favorites
-export async function addToFavorites(userDetails) {
-  const response = await axios.post(`${API_URL}/favorites`, userDetails);
-  console.log("Response:", response.data);
-  return response;
-}
-
-// remove from favorites
-export async function removeFromFavorites(userDetails) {
-  console.log(`Removing from favorites: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
-  try {
-    const response = await axios.delete(`${API_URL}/favorites`, {
-      data: userDetails // Changed to pass userDetails in the request body
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error removing from favorites:", error);
-    throw error;
-  }
-}
-
-// check if liked
-export async function checkIfLiked(username, recipe_id) {
-  try {
-    const response = await axios.get(`${API_URL}/isLiked`, {
-      params: {
-        username: username,
-        recipe_id: recipe_id,
-      }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error checking if favorite:", error);
-    throw error;
-  }
-}
-
-// add to liked
-export async function addToLiked(userDetails) {
-  console.log(`add to liked: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
-  const response = await axios.post(`${API_URL}/likeRecipe`, userDetails);
-  console.log("Response:", response.data);
-  return response;
-}
-
-// remove from liked
-export async function removeFromLiked(userDetails) {
-  console.log(`Removing from liked: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
-  try {
-    const response = await axios.delete(`${API_URL}/likeRecipe`, {
-      data: userDetails // Changed to pass userDetails in the request body
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error removing from liked:", error);
-    throw error;
-  }
-}
-
-// check if favorite
-export async function checkIfFavorite(username, recipe_id) {
-  try {
-    const response = await axios.get(`${API_URL}/isFavorite`, {
-      params: {
-        username: username,
-        recipe_id: recipe_id,
-      }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error checking if favorite:", error);
-    throw error;
-  }
-}
-
-export async function uploadImage(imageData) {
-  const response = await axios.post(`${API_URL}/uploadImage`, imageData);
-  return response; // Assuming server responds with image path or filename
 }
 
 // Upload a new recipe
 export async function uploadRecipe(recipeDetails) {
   const response = await axios.post(`${API_URL}/uploadRecipe`, recipeDetails, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   });
-  
   console.log('Recipe uploaded successfully:', response.data);
   return response;
 }
 
+// Search recipes
 export async function searchRecipes(recipeDetails) {
-  console.log(`recipeDetails: ${JSON.stringify(recipeDetails)}`);
-  
   const response = await axios.get(`${API_URL}/searchRecipe`, {
     params: recipeDetails,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
   });
-  
   console.log('Recipe searched successfully:', response.data);
   return response;
 }
 
-
-// Get full recipe details by recipe ID
-export async function getFullRecipe(recipeId) {
-  const response = await axios.get(`${API_URL}/getFullRecipe`, {
-    params: {
-      recipe_id: recipeId,
-    },
-  });
-
-  console.log('Recipe details:', response.data);
-  return response;
-}
-
-// Get my recipes
-export async function getMyRecipes(username) {
-  try {
-    const response = await axios.get(`${API_URL}/myRecipes`, {
-      params: { username }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error fetching my recipes:", error);
-    throw error;
-  }
-}
-
-// Get favorite recipes
-export async function getFavoriteRecipes(username) {
-  try {
-    const response = await axios.get(`${API_URL}/favorites`, {
-      params: { username }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error fetching favorite recipes:", error);
-    throw error;
-  }
-}
-
-// Get last 3 watced recipes
-export async function getLastRecipes(username) {
-  try {
-    const response = await axios.get(`${API_URL}/watched`, {
-      params: { username }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error fetching watched recipes:", error);
-    throw error;
-  }
-}
-
-// check if recipe is watched
-export async function checkIfWatched(username, recipe_id) {
-  try {
-    const response = await axios.get(`${API_URL}/isWatched`, {
-      params: {
-        username: username,
-        recipe_id: recipe_id,
-      }
-    });
-    console.log("Response:", response.data);
-    return response;
-  } catch (error) {
-    console.error("Error checking if watched:", error);
-    throw error;
-  }
-}
-
-// add to watched
-export async function addToWatched(userDetails) {
-  console.log(`add to watched: Username: ${userDetails.username}, Recipe ID: ${userDetails.recipe_id}`);
-  const response = await axios.post(`${API_URL}/watched`, userDetails);
-  console.log("Response:", response.data);
+// Upload an image
+export async function uploadImage(imageData) {
+  const response = await axios.post(`${API_URL}/uploadImage`, imageData);
   return response;
 }
 

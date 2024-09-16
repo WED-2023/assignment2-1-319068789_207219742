@@ -1,7 +1,7 @@
 // src/services/auth.js
+// This file handles user authentication. It includes functions for user registration, login, and logout. The functions in this file interact with the backend API to manage user authentication.
 
 import axios from "axios";
-
 const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
 
 // Register a new user
@@ -25,17 +25,6 @@ export async function logout() {
   return response;
 }
 
-// Get family recipes
-export async function getFamilyRecipes() {
-  try {
-    const response = await axios.get(`${API_URL}/recipes/family`);
-    console.log("Response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching family recipes:", error);
-    throw error;
-  }
-}
 
 //************************************************************ mock section *********************************************************************
 

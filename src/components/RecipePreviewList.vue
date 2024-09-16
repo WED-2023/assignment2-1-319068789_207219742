@@ -25,12 +25,15 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import {
-  getLastRecipes,
-  getFavoriteRecipes,
-  getMyRecipes,
   getFamilyRecipes,
   getRandomRecipes,
 } from "../services/recipes.js";
+
+import {
+  getLastRecipes,
+  getFavoriteRecipes,
+  getMyRecipes,
+} from "../services/user.js";
 
 export default {
   name: "RecipePreviewList",
