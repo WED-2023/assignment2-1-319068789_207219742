@@ -79,8 +79,10 @@ export default {
     },
   },
   async mounted() {
-    await this.checkIfFavoriteRecipe();
-    await this.checkIfWatched();
+    if(localStorage.username){
+      await this.checkIfFavoriteRecipe();
+      await this.checkIfWatched();
+    }
     await this.loadImage();
   },
   methods: {
