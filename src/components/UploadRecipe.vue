@@ -36,7 +36,6 @@
               min="1"
             />
           </div>
-          
 
           <div class="form-group">
             <label for="servings">Number of Servings:</label>
@@ -77,7 +76,6 @@
                 placeholder="Ingredient Name"
                 class="ingredient-field name"
               />
-              
             </div>
             <button
                 type="button"
@@ -85,7 +83,7 @@
                 class="addRemove-button"
               >
                 -
-              </button>
+            </button>
             <button
               type="button"
               @click="addIngredient"
@@ -94,9 +92,6 @@
               +
             </button>
           </div>
-
-
-
 
           <div class="form-group">
             <label>Instructions:</label>
@@ -185,9 +180,7 @@
                     :value="intolerance"
                     v-model="selectedIntolerances"
                   />
-                  <label :for="'intolerance-' + intolerance">{{
-                    intolerance
-                  }}</label>
+                  <label :for="'intolerance-' + intolerance">{{ intolerance }}</label>
                 </div>
               </div>
             </div>
@@ -212,8 +205,8 @@ export default {
       summary: "",
       time: "",
       servings: "",
-      ingredients: [{ text: "" }],
-      instructions: [{ text: "" }],
+      ingredients: [{ amount: "", unit: "", name: "" }],
+      instructions: [{ text: "" }], // Array of objects with a `text` property for instructions
       selectedCuisines: [],
       selectedDiets: [],
       selectedIntolerances: [],
@@ -268,90 +261,77 @@ export default {
         alert("There was an error uploading your image. Please try again.");
       }
     },
+
+    // Add an empty instruction
     addInstruction() {
-  this.instructions.push({ text: "" });
-},
-
-removeInstruction(index) {
-  this.instructions.splice(index, 1);
-},
-
-    addIngredient() {
-  this.ingredients.push({ amount: "", unit: "", name: "" });
-},
-
-removeIngredient(index) {
-  this.ingredients.splice(index, 1);
-},
-
-async handleSubmit() {
-  if (!this.validateInputs()) {
-    alert("Time to make and Number of Servings must be greater than 1.");
-    return;
-  }
-
-  try {
-    // Prepare the data for the recipe
-    const recipeDetails = {
-      title: this.title,
-      image: this.image, // Use the image data URL here
-      summary: this.summary,
-      readyInMinutes: this.time,
-      servings: this.servings,
-      cuisines: this.selectedCuisines,
-      diets: this.selectedDiets,
-      intolerances: this.selectedIntolerances,
-      username: localStorage.username,
-      ingredients: this.ingredients.map(ingredient => ({
-        amount: ingredient.amount,
-        unit: ingredient.unit,
-        name: ingredient.name,
-      })),
-      instructions: this.instructions.map((instruction, index) => ({
-        stepNumber: index + 1,
-        description: instruction.text,
-      })),
-    };
-
-    // Send the data to the server
-    const response = await uploadRecipe(recipeDetails);
-    if (response.status != 201) {
-      throw new Error("Failed to upload recipe");
-    }
-
-    alert("Recipe uploaded successfully!");
-    this.resetForm();
-    this.$emit("upload-success");
-  } catch (error) {
-    console.error("Error uploading recipe:", error);
-    alert("There was an error uploading your recipe. Please try again.");
-  }
+      this.instructions.push({ text: "" }); // Add an object with a text property
     },
-    validateInputs() {
-      return (
-        Number.isInteger(this.time) &&
-        this.time > 1 &&
-        Number.isInteger(this.servings) &&
-        this.servings > 1
-      );
-    },
-    resetForm() {
-      this.title = "";
-      this.image = null;
-      this.summary = "";
-      this.time = "";
-      this.servings = "";
-      this.ingredients = [{ text: "" }];
-      this.instructions = [{ text: "" }];
-      // Clear file input
-      const fileInput = this.$refs.image;
-      if (fileInput) {
-        fileInput.value = null;
+
+    // Remove instruction by index
+    removeInstruction(index) {
+      if (this.instructions.length > 1) {
+        this.instructions.splice(index, 1); // Ensure there's at least one instruction left
       }
+    },
+
+    // Add an empty ingredient
+    addIngredient() {
+      this.ingredients.push({ amount: "", unit: "", name: "" });
+    },
+
+    // Remove ingredient by index
+    removeIngredient(index) {
+      this.ingredients.splice(index, 1);
+    },
+
+    // Handle form submission
+    async handleSubmit() {
+      if (!this.validateInputs()) {
+        alert("Time to make and Number of Servings must be greater than 1.");
+        return;
+      }
+
+      try {
+        // Prepare the data for the recipe
+        const recipeDetails = {
+          title: this.title,
+          image: this.image, // Use the image data URL here
+          summary: this.summary,
+          readyInMinutes: this.time,
+          servings: this.servings,
+          cuisines: this.selectedCuisines,
+          diets: this.selectedDiets,
+          intolerances: this.selectedIntolerances,
+          username: localStorage.username,
+          ingredients: this.ingredients.map(ingredient => ({
+            amount: ingredient.amount,
+            unit: ingredient.unit,
+            name: ingredient.name,
+          })),
+          // Send the list of instruction texts
+          instructions: this.instructions.map(instruction => instruction.text),
+        };
+
+        // Send the data to the server
+        const response = await uploadRecipe(recipeDetails);
+        if (response.status != 201) {
+          throw new Error("Failed to upload recipe");
+        }
+
+        alert("Recipe uploaded successfully!");
+      } catch (error) {
+        console.error("Error uploading recipe:", error);
+        alert("There was an error uploading your recipe. Please try again.");
+      }
+    },
+
+    validateInputs() {
+      return this.time > 1 && this.servings > 1;
     },
   },
 };
 </script>
+
 
 
 <style scoped>
