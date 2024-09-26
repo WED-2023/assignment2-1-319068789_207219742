@@ -4,6 +4,21 @@
     <p>
       This website created by Alon Azran and Yehonatan Kidushim
     </p>
+    <p>
+      Previous works:
+    </p>
+    <p>
+      Alon:
+    </p>
+    <p>
+      https://wed-2023.github.io/207219742
+    </p>
+    <p>
+      Yehonatan:
+    </p>
+    <p>
+      https://wed-2023.github.io/319068789
+    </p>
   </div>
 </template>
 

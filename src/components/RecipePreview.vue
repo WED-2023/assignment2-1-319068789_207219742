@@ -56,7 +56,7 @@ import {
   addToFavorites,
   removeFromFavorites,
   checkIfFavorite,
-} from "../services/client.js";
+} from "../services/user.js";
 
 export default {
   data() {

@@ -90,7 +90,7 @@ import {
   addToLiked,
   checkIfLiked,
   removeFromLiked,
-} from "../services/client.js";
+} from "../services/user.js";
 
 export default {
   data() {

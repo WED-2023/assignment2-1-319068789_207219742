@@ -2,7 +2,7 @@
 //This file deals with recipe-related functionality. It contains functions for uploading, retrieving, searching, and interacting with recipes. This includes adding recipes to favorites, checking if recipes are liked or watched, and managing family and random recipe requests.
 
 import axios from "axios";
-const API_URL = `https://alonandyoni.cs.bgu.ac.il`;
+const API_URL = `https://alonandyoni.cs.bgu.ac.il/recipes`;
 
 // Get family recipes
 export async function getFamilyRecipes() {

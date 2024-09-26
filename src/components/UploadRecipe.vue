@@ -326,7 +326,7 @@ export default {
     },
 
     validateInputs() {
-      return this.time > 1 && this.servings > 1;
+      return this.time > 0 && this.servings > 0;
     },
   },
 };
